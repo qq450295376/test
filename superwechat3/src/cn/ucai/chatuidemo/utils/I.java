@@ -57,7 +57,7 @@ public interface I {
 		String IS_SEARCHED 							= 		"m_location_is_searched";		//鏄惁鍙互琚悳绱㈠埌
 		String UPDATE_TIME 							= 		"m_location_last_update_time";	//鏈�鍚庢洿鏂版椂闂�
 	}
-	String SERVER_TOOL								=		"http://10.0.2.2:8888/SuperWeChatServer/Server";
+	String SERVER_ROOT								=		"http://10.0.2.2:8888/SuperWeChatServer/Server";
 //	String AVATAR_PATH 								= 		"E:/test/";
 	String ISON8859_1 								= 		"iso8859-1";
 	String UTF_8 									= 		"utf-8";
