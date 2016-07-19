@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eff2f6"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/layout_register">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -153,7 +154,8 @@
             android:layout_height="54dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="#fff" >
+            android:background="#fff"
+            >
 
             <ImageView
                 android:id="@+id/iv_avatar"
@@ -174,7 +176,8 @@
                 android:hint="@string/dl_title_upload_photo"
                 android:paddingLeft="10dip"
                 android:singleLine="true"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                />
         </RelativeLayout>
 
         <LinearLayout
@@ -186,6 +189,7 @@
             android:orientation="horizontal" >
 
             <Button
+                android:id="@+id/btn_login"
                 android:background="#fff"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -200,6 +204,7 @@
                 android:paddingBottom="7dp"
                 android:onClick="login"/>
             <Button
+                android:id="@+id/btn_register"
                 android:background="@drawable/button_login_bg"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
