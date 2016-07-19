@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="环信DEMO"
-            android:textColor="#fff"
+            android:textColor="#000"
             android:textSize="20dip"
             android:typeface="normal" >
         </TextView>
