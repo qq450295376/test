@@ -37,7 +37,7 @@ public class UserDao {
 	public static final String ROBOT_COLUMN_NAME_NICK = "nick";
 	public static final String ROBOT_COLUMN_NAME_AVATAR = "avatar";
 
-	public static final String USER_TAIBLE_NAME="t_superwechat_user";
+	public static final String USER_TABLE_NAME="t_superwechat_user";
 	public static final String USER_COLUM_NAME_ID="muserName";
 	public static final String USER_COLUMN_NAME_NICK="muserNick";
 	public static final String USER_COLUMN_NAME_AVATAR="mavatarId";
