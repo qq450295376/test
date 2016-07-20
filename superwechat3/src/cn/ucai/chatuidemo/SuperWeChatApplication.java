@@ -18,6 +18,8 @@ import android.content.Context;
 
 import com.easemob.EMCallBack;
 
+import java.util.List;
+
 import cn.ucai.chatuidemo.bean.UserAvatar;
 
 public class SuperWeChatApplication extends Application {
@@ -110,6 +112,7 @@ public class SuperWeChatApplication extends Application {
 	    hxSDKHelper.logout(isGCM,emCallBack);
 	}
 	private UserAvatar user;
+	private List<UserAvatar> list;
 
 	public UserAvatar getUser() {
 		return user;
@@ -117,5 +120,13 @@ public class SuperWeChatApplication extends Application {
 
 	public void setUser(UserAvatar user) {
 		this.user = user;
+	}
+
+	public List<UserAvatar> getList() {
+		return list;
+	}
+
+	public void setList(List<UserAvatar> list) {
+		this.list = list;
 	}
 }
