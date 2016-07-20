@@ -19,6 +19,7 @@ import java.util.Map;
 import android.content.Context;
 
 
+import cn.ucai.chatuidemo.bean.UserAvatar;
 import cn.ucai.chatuidemo.domain.RobotUser;
 import cn.ucai.chatuidemo.domain.User;
 
@@ -107,4 +108,7 @@ public class UserDao {
     public void saveRobotUser(List<RobotUser> robotList){
     	DemoDBManager.getInstance().saveRobotList(robotList);
     }
+	public void saveUserAvatar(UserAvatar user){
+		DemoDBManager.getInstance().saveUserAvatar(user);
+	}
 }

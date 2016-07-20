@@ -81,6 +81,7 @@ public interface I {
 	String AVATAR_SUFFIX_JPG						=		".jpg";							//JPG鍥剧墖鍚庣紑鍚�
 	String QUESTION									=		"?";							//问号
 	String EQU										=		"=";							//等号
+	String MSG_PREFIX_MSG							=		"msg_";							//消息吗前缀
 	int LOCATION_IS_SEARCH_ALLOW					=		1;								//鍙互琚悳绱㈠埌鍦扮悊浣嶇疆
 	int LOCATION_IS_SEARCH_INHIBIT					=		0;								//绂佹琚悳绱㈠埌鍦扮悊浣嶇疆
 	int MSG_SUCCESS						            =  		0;							    //榛樿鎴愬姛

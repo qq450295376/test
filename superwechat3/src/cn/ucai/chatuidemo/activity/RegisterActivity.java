@@ -30,6 +30,7 @@ import cn.ucai.chatuidemo.bean.Result;
 import cn.ucai.chatuidemo.data.OkHttpUtils2;
 import cn.ucai.chatuidemo.listener.OnSetAvatarListener;
 import cn.ucai.chatuidemo.utils.I;
+import cn.ucai.chatuidemo.utils.Utils;
 
 import com.easemob.chatuidemo.R;
 import com.easemob.exceptions.EaseMobException;
@@ -165,7 +166,7 @@ public class RegisterActivity extends BaseActivity {
 							registerEMServer();
 						}else {
 							pd.dismiss();
-							Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registration_failed), Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(),R.string.Registration_failed+ Utils.getResourceString(RegisterActivity.this,result.getRetCode()), Toast.LENGTH_SHORT).show();
 
 						}
 					}

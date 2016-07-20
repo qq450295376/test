@@ -41,11 +41,13 @@ import cn.ucai.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.R;
 
 import cn.ucai.chatuidemo.bean.Result;
+import cn.ucai.chatuidemo.bean.UserAvatar;
 import cn.ucai.chatuidemo.data.OkHttpUtils2;
 import cn.ucai.chatuidemo.db.UserDao;
 import cn.ucai.chatuidemo.domain.User;
 import cn.ucai.chatuidemo.utils.CommonUtils;
 import cn.ucai.chatuidemo.utils.I;
+import cn.ucai.chatuidemo.utils.Utils;
 
 /**
  * 登陆页面
@@ -223,10 +225,12 @@ public class LoginActivity extends BaseActivity {
 					@Override
 					public void onSuccess(Result result) {
 						if (result!=null&&result.isRetMsg()){
+							UserAvatar user= (UserAvatar) result.getRetData();
+							saveUserToDB(user);
 							loginSuccess();
 						}else {
 							pd.dismiss();
-							Toast.makeText(getApplicationContext(), getString(R.string.Login_failed+result.getRetCode()) , Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(),R.string.Login_failed+ Utils.getResourceString(LoginActivity.this,result.getRetCode()), Toast.LENGTH_SHORT).show();
 						}
 					}
 
@@ -237,6 +241,12 @@ public class LoginActivity extends BaseActivity {
 						Toast.makeText(getApplicationContext(), getString(R.string.Login_failed) , Toast.LENGTH_SHORT).show();
 					}
 				});
+	}
+	public void saveUserToDB(UserAvatar user){
+		if (user!=null){
+			UserDao dao = new UserDao(LoginActivity.this);
+			dao.saveUserAvatar(user);
+		}
 	}
 
 	private void initializeContacts() {
