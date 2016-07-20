@@ -88,9 +88,12 @@ public class LoginActivity extends BaseActivity {
 			usernameEditText.setText(SuperWeChatApplication.getInstance().getUserName());
 		}
 	}
-	private void loginSuccess(){
+	private void loginSuccess(UserAvatar user){
 		SuperWeChatApplication.getInstance().setUserName(currentUsername);
 		SuperWeChatApplication.getInstance().setPassword(currentPassword);
+		SuperWeChatApplication.getInstance().setUser(user);
+		SuperWeChatApplication.currentUserNick=user.getMUserNick();
+
 
 		try {
 			// ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
@@ -216,18 +219,19 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void loginServer() {
-		final OkHttpUtils2<Result> utils=new OkHttpUtils2<Result>();
+		final OkHttpUtils2<String> utils=new OkHttpUtils2<String>();
 		utils.setRequestUrl(I.REQUEST_LOGIN)
 				.addParam(I.User.USER_NAME,currentUsername)
 				.addParam(I.User.PASSWORD,currentPassword)
-				.targetClass(Result.class)
-				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 					@Override
-					public void onSuccess(Result result) {
+					public void onSuccess(String s) {
+						Result result=Utils.getResultFromJson(s,UserAvatar.class);
 						if (result!=null&&result.isRetMsg()){
 							UserAvatar user= (UserAvatar) result.getRetData();
 							saveUserToDB(user);
-							loginSuccess();
+							loginSuccess(user);
 						}else {
 							pd.dismiss();
 							Toast.makeText(getApplicationContext(),R.string.Login_failed+ Utils.getResourceString(LoginActivity.this,result.getRetCode()), Toast.LENGTH_SHORT).show();
