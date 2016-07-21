@@ -113,4 +113,22 @@ public class UserUtils {
 		return user;
 	}
 
+	public static void setAppUserAvatar(Context context, String username, ImageView imageView) {
+		String path=getUserAvatarPath(username);
+		if(path != null && username != null){
+			Picasso.with(context).load(path).placeholder(R.drawable.default_avatar).into(imageView);
+		}else{
+			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+		}
+	}
+	private static String getUserAvatarPath(String username){
+		StringBuilder path=new StringBuilder(I.SERVER_ROOT);
+		path.append(I.QUESTION).append(I.KEY_REQUEST)
+				.append(I.EQU).append(I.REQUEST_DOWNLOAD_AVATAR)
+				.append(I.AND)
+		.append(I.NAME_OR_HXID).append(I.EQU).append(username)
+				.append(I.AND)
+		.append(I.AVATAR_TYPE).append(I.EQU).append(I.AVATAR_TYPE_USER_PATH);
+		return path.toString();
+	}
 }
