@@ -121,7 +121,8 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 			holder.nameTextview.setText(user.getNick());
 			holder.avatar.setImageResource(R.drawable.groups_icon);
 		}else{
-		    holder.nameTextview.setText(user.getNick());
+//		    holder.nameTextview.setText(user.getNick());
+			UserUtils.setAppUserNick(username,holder.nameTextview);
 		    //设置用户头像
 			UserUtils.setUserAvatar(getContext(), username, holder.avatar);
 			if(holder.unreadMsgView != null)
@@ -208,8 +209,10 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 					final User user = mOriginalList.get(i);
 					String username = user.getUsername();
 					
-					if(username.startsWith(prefixString)){
-						newValues.add(user);
+					if(username.contains(prefixString)){
+						if (!username.equals(Constant.GROUP_USERNAME)&&!username.equals(Constant.NEW_FRIENDS_USERNAME)){
+							newValues.add(user);
+						}
 					}
 					else{
 						 final String[] words = username.split(" ");

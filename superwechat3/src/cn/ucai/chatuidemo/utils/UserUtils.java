@@ -9,6 +9,9 @@ import cn.ucai.applib.controller.HXSDKHelper;
 import cn.ucai.chatuidemo.DemoHXSDKHelper;
 
 import com.easemob.chatuidemo.R;
+
+import cn.ucai.chatuidemo.SuperWeChatApplication;
+import cn.ucai.chatuidemo.bean.UserAvatar;
 import cn.ucai.chatuidemo.domain.User;
 import com.squareup.picasso.Picasso;
 
@@ -89,5 +92,25 @@ public class UserUtils {
 		}
 		((DemoHXSDKHelper) HXSDKHelper.getInstance()).saveContact(newUser);
 	}
-    
+	public static void setAppUserNick(String username,TextView textView){
+		UserAvatar user=getAppUserInfo(username);
+		if (user!=null){
+			if (user.getMUserNick()!=null){
+				textView.setText(user.getMUserNick());
+			}else {
+				textView.setText(username);
+			}
+		}else {
+			textView.setText(username);
+		}
+	}
+
+	private static UserAvatar getAppUserInfo(String username) {
+		UserAvatar user= SuperWeChatApplication.getInstance().getUserMap().get(username);
+		if (user ==null){
+			user =new UserAvatar(username);
+		}
+		return user;
+	}
+
 }
