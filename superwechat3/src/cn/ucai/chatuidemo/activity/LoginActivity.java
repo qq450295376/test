@@ -99,7 +99,7 @@ public class LoginActivity extends BaseActivity {
 
 		try {
 			// ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
-			// ** manually load all local groups and
+			// ** manually load all local groups andd
 			EMGroupManager.getInstance().loadAllGroups();
 			EMChatManager.getInstance().loadAllConversations();
 			// 处理好友和群组
@@ -236,7 +236,8 @@ public class LoginActivity extends BaseActivity {
 							loginSuccess(user);
 						}else {
 							pd.dismiss();
-							Toast.makeText(getApplicationContext(),R.string.Login_failed+ Utils.getResourceString(LoginActivity.this,result.getRetCode()), Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(),
+									R.string.Login_failed+ Utils.getResourceString(LoginActivity.this,result.getRetCode()), Toast.LENGTH_SHORT).show();
 						}
 					}
 

@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,6 +13,11 @@ import android.widget.TextView;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.chatuidemo.DemoHXSDKHelper;
+import cn.ucai.chatuidemo.SuperWeChatApplication;
+import cn.ucai.chatuidemo.bean.UserAvatar;
+import cn.ucai.chatuidemo.db.UserDao;
+import cn.ucai.chatuidemo.task.DownloadContactListTask;
+
 import com.easemob.chatuidemo.R;
 
 /**
@@ -51,6 +57,14 @@ public class SplashActivity extends BaseActivity {
 					long start = System.currentTimeMillis();
 					EMGroupManager.getInstance().loadAllGroups();
 					EMChatManager.getInstance().loadAllConversations();
+
+					String username = SuperWeChatApplication.getInstance().getUserName();
+					UserDao dao=new UserDao(SplashActivity.this);
+					UserAvatar user=dao.getUserAvatar(username);
+					SuperWeChatApplication.getInstance().setUser(user);
+					SuperWeChatApplication.currentUserNick=user.getMUserNick();
+					new DownloadContactListTask(username,SplashActivity.this).execute();
+					Log.i("main","user="+user);
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
 					if (sleepTime - costTime > 0) {
