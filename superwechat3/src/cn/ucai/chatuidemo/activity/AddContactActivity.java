@@ -28,9 +28,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.ucai.applib.controller.HXSDKHelper;
+
+import com.baidu.mapapi.map.Text;
 import com.easemob.chat.EMContactManager;
 import cn.ucai.chatuidemo.SuperWeChatApplication;
 import cn.ucai.chatuidemo.DemoHXSDKHelper;
+import cn.ucai.chatuidemo.bean.Result;
+import cn.ucai.chatuidemo.bean.UserAvatar;
+import cn.ucai.chatuidemo.data.OkHttpUtils2;
+import cn.ucai.chatuidemo.utils.I;
+import cn.ucai.chatuidemo.utils.Utils;
+
 import com.easemob.chatuidemo.R;
 
 public class AddContactActivity extends BaseActivity{
@@ -42,13 +50,14 @@ public class AddContactActivity extends BaseActivity{
 	private InputMethodManager inputMethodManager;
 	private String toAddUsername;
 	private ProgressDialog progressDialog;
-
+	private TextView tvNothing;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_contact);
 		mTextView = (TextView) findViewById(R.id.add_list_friends);
-		
+
+		tvNothing= (TextView) findViewById(R.id.tvNothing);
 		editText = (EditText) findViewById(R.id.edit_note);
 		String strAdd = getResources().getString(R.string.add_friend);
 		mTextView.setText(strAdd);
@@ -77,9 +86,37 @@ public class AddContactActivity extends BaseActivity{
 				startActivity(new Intent(this, AlertDialog.class).putExtra("msg", st));
 				return;
 			}
+
+			final OkHttpUtils2<String> utils=new OkHttpUtils2<String>();
+			utils.setRequestUrl(I.REQUEST_FIND_USER)
+					.addParam(I.User.USER_NAME,toAddUsername)
+					.targetClass(String.class)
+					.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+						@Override
+						public void onSuccess(String s) {
+							Result result= Utils.getResultFromJson(s, UserAvatar.class);
+							if (result!=null&&result.isRetMsg()){
+								UserAvatar user= (UserAvatar) result.getRetData();
+								if (user!=null){
+									//服务器存在此用户，显示此用户和添加按钮
+									searchedUserLayout.setVisibility(View.VISIBLE);
+									nameText.setText(toAddUsername);
+									tvNothing.setVisibility(View.GONE);
+								}
+							}else {
+								searchedUserLayout.setVisibility(View.GONE);
+								tvNothing.setVisibility(View.VISIBLE);
+							}
+						}
+
+						@Override
+						public void onError(String error) {
+							searchedUserLayout.setVisibility(View.GONE);
+							tvNothing.setVisibility(View.VISIBLE);
+						}
+					});
 			
 			// TODO 从服务器获取此contact,如果不存在提示不存在此用户
-			
 			//服务器存在此用户，显示此用户和添加按钮
 			searchedUserLayout.setVisibility(View.VISIBLE);
 			nameText.setText(toAddUsername);
