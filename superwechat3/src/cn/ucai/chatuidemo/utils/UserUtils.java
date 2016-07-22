@@ -81,7 +81,16 @@ public class UserUtils {
     		textView.setText(user.getNick());
     	}
     }
-    
+	public static void setAppCurrentUserNick(TextView textView){
+		UserAvatar user=SuperWeChatApplication.getInstance().getUser();
+		if(textView != null && user!=null){
+			if (user.getMUserNick()!=null){
+				textView.setText(user.getMUserNick());
+			}else {
+				textView.setText(user.getMUserName());
+			}
+		}
+	}
     /**
      * 保存或更新某个用户
      * @param user
