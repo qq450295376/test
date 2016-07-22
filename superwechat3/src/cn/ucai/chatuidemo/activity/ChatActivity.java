@@ -99,6 +99,7 @@ import cn.ucai.chatuidemo.utils.CommonUtils;
 import cn.ucai.chatuidemo.utils.ImageUtils;
 import cn.ucai.chatuidemo.utils.SmileUtils;
 import cn.ucai.chatuidemo.utils.UserUtils;
+import cn.ucai.chatuidemo.utils.Utils;
 import cn.ucai.chatuidemo.widget.ExpandGridView;
 import cn.ucai.chatuidemo.widget.PasteEditText;
 import com.easemob.exceptions.EaseMobException;
@@ -1415,7 +1416,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 						if (filename != "delete_expression") { // 不是删除键，显示表情
 							// 这里用的反射，所以混淆的时候不要混淆SmileUtils这个类
-							Class clz = Class.forName("SmileUtils");
+							Class clz = Class.forName("cn.ucai.chatuidemo.utils.SmileUtils");
 							Field field = clz.getField(filename);
 							mEditTextContent.append(SmileUtils.getSmiledText(ChatActivity.this,
 									(String) field.get(null)));

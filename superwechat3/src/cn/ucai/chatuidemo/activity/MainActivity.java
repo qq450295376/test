@@ -59,11 +59,19 @@ import com.easemob.chat.TextMessageBody;
 import cn.ucai.chatuidemo.Constant;
 import cn.ucai.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.R;
+
+import cn.ucai.chatuidemo.SuperWeChatApplication;
+import cn.ucai.chatuidemo.bean.Result;
+import cn.ucai.chatuidemo.bean.UserAvatar;
+import cn.ucai.chatuidemo.data.OkHttpUtils2;
 import cn.ucai.chatuidemo.db.InviteMessgeDao;
 import cn.ucai.chatuidemo.db.UserDao;
 import cn.ucai.chatuidemo.domain.InviteMessage;
 import cn.ucai.chatuidemo.domain.User;
 import cn.ucai.chatuidemo.utils.CommonUtils;
+import cn.ucai.chatuidemo.utils.I;
+import cn.ucai.chatuidemo.utils.Utils;
+
 import com.easemob.util.EMLog;
 import com.easemob.util.HanziToPinyin;
 import com.easemob.util.NetUtils;
@@ -517,6 +525,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 			// 保存增加的联系人
 			Map<String, User> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
 			Map<String, User> toAddUsers = new HashMap<String, User>();
+			Map<String,UserAvatar> userMap= SuperWeChatApplication.getInstance().getUserMap();
+			List<String> toAddUserName = new ArrayList<String>();
+
 			for (String username : usernameList) {
 				User user = setUserHead(username);
 				// 添加好友时可能会回调added方法两次
@@ -524,8 +535,39 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 					userDao.saveContact(user);
 				}
 				toAddUsers.put(username, user);
+				if (!userMap.containsKey(username)){
+					toAddUserName.add(username);
+				}
 			}
 			localUsers.putAll(toAddUsers);
+			for (String name : toAddUserName){
+				final OkHttpUtils2<String> utils=new OkHttpUtils2<String>();
+				utils.setRequestUrl(I.REQUEST_ADD_CONTACT)
+						.addParam(I.Contact.USER_NAME,SuperWeChatApplication.getInstance().getUserName())
+						.addParam(I.Contact.CU_NAME,name)
+						.targetClass(String.class)
+						.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+							@Override
+							public void onSuccess(String s) {
+								Result result= Utils.getResultFromJson(s,UserAvatar.class);
+								if (result!=null && result.isRetMsg()){
+									UserAvatar user= (UserAvatar) result.getRetData();
+									if (user!=null){
+										if (!SuperWeChatApplication.getInstance().getUserMap().containsKey(user.getMUserName())){
+											SuperWeChatApplication.getInstance().getUserMap().put(user.getMUserName(),user);
+											SuperWeChatApplication.getInstance().getList().add(user);
+											sendStickyBroadcast(new Intent("update_contact_list"));
+										}
+									}
+								}
+							}
+
+							@Override
+							public void onError(String error) {
+
+							}
+						});
+			}
 			// 刷新ui
 			if (currentTabIndex == 1)
 				contactListFragment.refresh();

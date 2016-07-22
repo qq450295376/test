@@ -33,9 +33,18 @@ import android.widget.Toast;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chatuidemo.R;
+
+import cn.ucai.chatuidemo.SuperWeChatApplication;
+import cn.ucai.chatuidemo.bean.Result;
+import cn.ucai.chatuidemo.bean.UserAvatar;
+import cn.ucai.chatuidemo.data.OkHttpUtils2;
 import cn.ucai.chatuidemo.db.InviteMessgeDao;
 import cn.ucai.chatuidemo.domain.InviteMessage;
 import cn.ucai.chatuidemo.domain.InviteMessage.InviteMesageStatus;
+import cn.ucai.chatuidemo.domain.User;
+import cn.ucai.chatuidemo.utils.I;
+import cn.ucai.chatuidemo.utils.UserUtils;
+import cn.ucai.chatuidemo.utils.Utils;
 
 public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 
@@ -83,7 +92,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			}
 			
 			holder.reason.setText(msg.getReason());
-			holder.name.setText(msg.getFrom());
+//			holder.name.setText(msg.getFrom());
 			// holder.time.setText(DateUtils.getTimestampString(new
 			// Date(msg.getTime())));
 			if (msg.getStatus() == InviteMesageStatus.BEAGREED) {
@@ -124,6 +133,30 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			}
 
 			// 设置用户头像
+			UserUtils.setAppUserAvatar(context,msg.getFrom(),holder.avator);
+			final OkHttpUtils2<String> utils=new OkHttpUtils2<String>();
+			utils.setRequestUrl(I.REQUEST_FIND_USER)
+					.addParam(I.User.USER_NAME,msg.getFrom())
+					.targetClass(String.class)
+					.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+						@Override
+						public void onSuccess(String s) {
+							Result result=Utils.getResultFromJson(s, UserAvatar.class);
+							if (result!=null && result.isRetMsg()){
+								UserAvatar user= (UserAvatar) result.getRetData();
+								if (user!=null){
+									UserUtils.setAppUserNick(user,holder.name);
+								}else {
+									holder.name.setText(msg.getFrom());
+								}
+							}
+						}
+
+						@Override
+						public void onError(String error) {
+
+						}
+					});
 		}
 
 		return convertView;
