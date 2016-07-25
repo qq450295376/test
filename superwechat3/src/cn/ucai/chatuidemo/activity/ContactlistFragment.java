@@ -57,10 +57,16 @@ import com.easemob.chat.EMContactManager;
 import cn.ucai.chatuidemo.Constant;
 import cn.ucai.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.R;
+
+import cn.ucai.chatuidemo.SuperWeChatApplication;
 import cn.ucai.chatuidemo.adapter.ContactAdapter;
+import cn.ucai.chatuidemo.bean.Result;
+import cn.ucai.chatuidemo.bean.UserAvatar;
+import cn.ucai.chatuidemo.data.OkHttpUtils2;
 import cn.ucai.chatuidemo.db.InviteMessgeDao;
 import cn.ucai.chatuidemo.db.UserDao;
 import cn.ucai.chatuidemo.domain.User;
+import cn.ucai.chatuidemo.utils.I;
 import cn.ucai.chatuidemo.widget.Sidebar;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
@@ -87,6 +93,9 @@ public class ContactlistFragment extends Fragment {
 	Handler handler = new Handler();
     private User toBeProcessUser;
     private String toBeProcessUsername;
+
+	private UserDao userDao;
+	private InviteMessgeDao inviteMessgeDao;
 
 	class HXContactSyncListener implements HXSDKHelper.HXSyncListener {
 		@Override
@@ -361,7 +370,33 @@ public class ContactlistFragment extends Fragment {
 
 			}
 		}).start();
+		String currentUserName= SuperWeChatApplication.getInstance().getUserName();
+		final OkHttpUtils2<Result> utils=new OkHttpUtils2<Result>();
+		utils.setRequestUrl(I.REQUEST_DELETE_CONTACT)
+				.addParam(I.Contact.USER_NAME,currentUserName)
+				.addParam(I.Contact.CU_NAME,tobeDeleteUser.getUsername())
+				.targetClass(Result.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+					@Override
+					public void onSuccess(Result result) {
+						if (result.isRetMsg()){
+							((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList().remove(tobeDeleteUser.getUsername());
+							UserAvatar u=SuperWeChatApplication.getInstance().getUserMap().get(tobeDeleteUser.getUsername());
+							SuperWeChatApplication.getInstance().getList().remove(u);
+							SuperWeChatApplication.getInstance().getUserMap().remove(tobeDeleteUser.getUsername());
+							getActivity().sendStickyBroadcast(new Intent("update_contact_list"));
+							userDao=new UserDao(getActivity());
+							inviteMessgeDao=new InviteMessgeDao(getActivity());
+							userDao.deleteContact(tobeDeleteUser.getUsername());
+							inviteMessgeDao.deleteMessage(tobeDeleteUser.getUsername());
+						}
+					}
 
+					@Override
+					public void onError(String error) {
+
+					}
+				});
 	}
 
 	/**
