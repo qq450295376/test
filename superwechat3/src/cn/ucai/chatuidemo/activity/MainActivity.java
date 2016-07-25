@@ -578,10 +578,35 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		public void onContactDeleted(final List<String> usernameList) {
 			// 被删除
 			Map<String, User> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
+			List<String> toDeleteUserName=new ArrayList<String>();
+			String currentUserName = SuperWeChatApplication.getInstance().getUserName();
 			for (String username : usernameList) {
 				localUsers.remove(username);
 				userDao.deleteContact(username);
 				inviteMessgeDao.deleteMessage(username);
+			}
+			for ( final String name : toDeleteUserName){
+				final OkHttpUtils2<Result> utils=new OkHttpUtils2<Result>();
+				utils.setRequestUrl(I.REQUEST_DELETE_CONTACT)
+						.addParam(I.Contact.USER_NAME,currentUserName)
+						.addParam(I.Contact.CU_NAME,name)
+						.targetClass(Result.class)
+						.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+							@Override
+							public void onSuccess(Result result) {
+								Map<String, UserAvatar> userMap=SuperWeChatApplication.getInstance().getUserMap();
+								List<UserAvatar> userList=SuperWeChatApplication.getInstance().getList();
+								UserAvatar u=userMap.get(name);
+								userList.remove(u);
+								userMap.remove(name);
+								sendStickyBroadcast(new Intent("updata_contact_list"));
+							}
+
+							@Override
+							public void onError(String error) {
+
+							}
+						});
 			}
 			runOnUiThread(new Runnable() {
 				public void run() {
