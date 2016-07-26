@@ -585,7 +585,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 				userDao.deleteContact(username);
 				inviteMessgeDao.deleteMessage(username);
 			}
-
 			runOnUiThread(new Runnable() {
 				public void run() {
 					// 如果正在与此用户的聊天页面

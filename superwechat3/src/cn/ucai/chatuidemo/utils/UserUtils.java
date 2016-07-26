@@ -144,4 +144,24 @@ public class UserUtils {
 		.append(I.AVATAR_TYPE).append(I.EQU).append(I.AVATAR_TYPE_USER_PATH);
 		return path.toString();
 	}
+
+	public static void setAppGroupAvatar(Context mContext, String groupId, ImageView viewById) {
+		String path=getGroupAvatarPath(groupId);
+		if(path != null && groupId != null){
+			Picasso.with(mContext).load(path).placeholder(R.drawable.default_avatar).into(viewById);
+		}else{
+			Picasso.with(mContext).load(R.drawable.default_avatar).into(viewById);
+		}
+	}
+
+	private static String getGroupAvatarPath(String groupId) {
+		StringBuilder path=new StringBuilder(I.SERVER_ROOT);
+		path.append(I.QUESTION).append(I.KEY_REQUEST)
+				.append(I.EQU).append(I.REQUEST_DOWNLOAD_AVATAR)
+				.append(I.AND)
+				.append(I.NAME_OR_HXID).append(I.EQU).append(groupId)
+				.append(I.AND)
+				.append(I.AVATAR_TYPE).append(I.EQU).append(I.AVATAR_TYPE_GROUP_PATH);
+		return path.toString();
+	}
 }

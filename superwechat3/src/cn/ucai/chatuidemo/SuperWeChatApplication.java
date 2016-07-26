@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.ucai.chatuidemo.bean.GroupAvatar;
 import cn.ucai.chatuidemo.bean.UserAvatar;
 
 public class SuperWeChatApplication extends Application {
@@ -117,6 +118,7 @@ public class SuperWeChatApplication extends Application {
 	private UserAvatar user;
 	private List<UserAvatar> list=new ArrayList<UserAvatar>();
 	private Map<String,UserAvatar> userMap=new HashMap<String, UserAvatar>();
+	private List<GroupAvatar> groupList=new ArrayList<GroupAvatar>();
 
 	public Map<String, UserAvatar> getUserMap() {
 		return userMap;
@@ -140,5 +142,13 @@ public class SuperWeChatApplication extends Application {
 
 	public void setList(List<UserAvatar> list) {
 		this.list = list;
+	}
+
+	public List<GroupAvatar> getGroupList() {
+		return groupList;
+	}
+
+	public void setGroupList(List<GroupAvatar> groupList) {
+		this.groupList = groupList;
 	}
 }

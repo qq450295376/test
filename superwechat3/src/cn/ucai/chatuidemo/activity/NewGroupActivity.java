@@ -22,12 +22,24 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chatuidemo.R;
 import com.easemob.exceptions.EaseMobException;
+
+import java.io.File;
+
+import cn.ucai.chatuidemo.SuperWeChatApplication;
+import cn.ucai.chatuidemo.bean.GroupAvatar;
+import cn.ucai.chatuidemo.bean.Result;
+import cn.ucai.chatuidemo.data.OkHttpUtils2;
+import cn.ucai.chatuidemo.listener.OnSetAvatarListener;
+import cn.ucai.chatuidemo.utils.I;
+import cn.ucai.chatuidemo.utils.Utils;
 
 public class NewGroupActivity extends BaseActivity {
 	private EditText groupNameEditText;
@@ -36,6 +48,12 @@ public class NewGroupActivity extends BaseActivity {
 	private CheckBox checkBox;
 	private CheckBox memberCheckbox;
 	private LinearLayout openInviteContainer;
+	private String AvatartName=String.valueOf(System.currentTimeMillis());
+
+	private static int CREATE_GROUP=100;
+	private EditText avatar;
+	OnSetAvatarListener mOnSetAvatarListener;
+	private ImageView ivAvatar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +64,9 @@ public class NewGroupActivity extends BaseActivity {
 		checkBox = (CheckBox) findViewById(R.id.cb_public);
 		memberCheckbox = (CheckBox) findViewById(R.id.cb_member_inviter);
 		openInviteContainer = (LinearLayout) findViewById(R.id.ll_open_invite);
-		
+		avatar= (EditText) findViewById(R.id.avatar);
+		ivAvatar= (ImageView) findViewById(R.id.iv_avatar);
+
 		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
@@ -56,6 +76,16 @@ public class NewGroupActivity extends BaseActivity {
 				}else{
 					openInviteContainer.setVisibility(View.VISIBLE);
 				}
+			}
+		});
+		setListener();
+	}
+
+	private void setListener() {
+		findViewById(R.id.avatar).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mOnSetAvatarListener=new OnSetAvatarListener(NewGroupActivity.this,R.id.layout_group,AvatartName, I.AVATAR_TYPE_GROUP_PATH);
 			}
 		});
 	}
@@ -72,21 +102,26 @@ public class NewGroupActivity extends BaseActivity {
 			startActivity(intent);
 		} else {
 			// 进通讯录选人
-			startActivityForResult(new Intent(this, GroupPickContactsActivity.class).putExtra("groupName", name), 0);
+			startActivityForResult(new Intent(this, GroupPickContactsActivity.class).putExtra("groupName", name), CREATE_GROUP);
 		}
 	}
-	
+	String st1;
+	String st2;
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		String st1 = getResources().getString(R.string.Is_to_create_a_group_chat);
-		final String st2 = getResources().getString(R.string.Failed_to_create_groups);
-		if (resultCode == RESULT_OK) {
+		st1 = getResources().getString(R.string.Is_to_create_a_group_chat);
+		st2 = getResources().getString(R.string.Failed_to_create_groups);
+		if (resultCode!=RESULT_OK){
+			return;
+		}
+		mOnSetAvatarListener.setAvatar(requestCode,data,ivAvatar);
+		if (requestCode==OnSetAvatarListener.REQUEST_CROP_PHOTO){
+
+		}
+		if (requestCode == CREATE_GROUP) {
 			//新建群组
-			progressDialog = new ProgressDialog(this);
-			progressDialog.setMessage(st1);
-			progressDialog.setCanceledOnTouchOutside(false);
-			progressDialog.show();
+			setProgressDialog();
 
 			new Thread(new Runnable() {
 				@Override
@@ -95,15 +130,17 @@ public class NewGroupActivity extends BaseActivity {
 					String groupName = groupNameEditText.getText().toString().trim();
 					String desc = introductionEditText.getText().toString();
 					String[] members = data.getStringArrayExtra("newmembers");
+					EMGroup group;
 					try {
 						if(checkBox.isChecked()){
 							//创建公开群，此种方式创建的群，可以自由加入
 							//创建公开群，此种方式创建的群，用户需要申请，等群主同意后才能加入此群
-						    EMGroupManager.getInstance().createPublicGroup(groupName, desc, members, true,200);
+						    group=EMGroupManager.getInstance().createPublicGroup(groupName, desc, members, true,200);
 						}else{
 							//创建不公开群
-						    EMGroupManager.getInstance().createPrivateGroup(groupName, desc, members, memberCheckbox.isChecked(),200);
+						    group=EMGroupManager.getInstance().createPrivateGroup(groupName, desc, members, memberCheckbox.isChecked(),200);
 						}
+						createAppGroup(group.getGroupId(),groupName,desc,members);
 						runOnUiThread(new Runnable() {
 							public void run() {
 								progressDialog.dismiss();
@@ -123,6 +160,92 @@ public class NewGroupActivity extends BaseActivity {
 				}
 			}).start();
 		}
+	}
+
+	private void setProgressDialog() {
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setMessage(st1);
+		progressDialog.setCanceledOnTouchOutside(false);
+		progressDialog.show();
+	}
+
+	private void createAppGroup(final String groupId, String groupName, String desc, final String[] members) {
+		boolean ispublic =checkBox.isChecked();
+		boolean invites = !ispublic;
+		File file=new File(OnSetAvatarListener.getAvatarPath(NewGroupActivity.this,I.AVATAR_TYPE_GROUP_PATH),AvatartName+I.AVATAR_SUFFIX_JPG);
+		String own = SuperWeChatApplication.getInstance().getUserName();
+		final OkHttpUtils2<String> utils= new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_CREATE_GROUP)
+				.addParam(I.Group.HX_ID,groupId)
+				.addParam(I.Group.NAME,groupName)
+				.addParam(I.Group.OWNER,own)
+				.addParam(I.Group.DESCRIPTION,desc)
+				.addParam(I.Group.IS_PUBLIC,String.valueOf(ispublic))
+				.addParam(I.Group.ALLOW_INVITES,String.valueOf(invites))
+				.targetClass(String.class)
+				.addFile(file)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+						if (result!=null && result.isRetMsg()){
+							if (members!=null && members.length>0){
+								addGroupMembers(groupId,members);
+							}else {
+								runOnUiThread(new Runnable() {
+									public void run() {
+										progressDialog.dismiss();
+										setResult(RESULT_OK);
+										finish();
+									}
+								});
+							}
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+
+					}
+				});
+	}
+
+	private void addGroupMembers(String hxid, String[] members) {
+		String memberArr="";
+		for (String m : members){
+			memberArr+=m+",";
+		}
+		memberArr.substring(0,memberArr.length()-1);
+		final OkHttpUtils2<String> utils=new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
+				.addParam(I.Member.GROUP_HX_ID,hxid)
+				.addParam(I.Member.USER_NAME,memberArr)
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+						GroupAvatar groupAvatar = (GroupAvatar) result.getRetData();
+						if (result!=null&&result.isRetMsg()){
+							runOnUiThread(new Runnable() {
+								public void run() {
+									progressDialog.dismiss();
+									setResult(RESULT_OK);
+									finish();
+								}
+							});
+						}else {
+							progressDialog.dismiss();
+							Toast.makeText(NewGroupActivity.this,st2,Toast.LENGTH_LONG).show();
+
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+
+					}
+				});
 	}
 
 	public void back(View view) {
