@@ -11,9 +11,13 @@ import cn.ucai.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.R;
 
 import cn.ucai.chatuidemo.SuperWeChatApplication;
+import cn.ucai.chatuidemo.bean.MemberUserAvatar;
 import cn.ucai.chatuidemo.bean.UserAvatar;
 import cn.ucai.chatuidemo.domain.User;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserUtils {
     /**
@@ -163,5 +167,26 @@ public class UserUtils {
 				.append(I.AND)
 				.append(I.AVATAR_TYPE).append(I.EQU).append(I.AVATAR_TYPE_GROUP_PATH);
 		return path.toString();
+	}
+
+	public static void setAppMemberNick(String hxid, String username, TextView textView) {
+		MemberUserAvatar member=getMemberInfo(hxid,username);
+		if (member!=null && member.getMUserNick()!=null){
+			textView.setText(member.getMUserNick());
+		}else {
+			textView.setText(username);
+		}
+
+	}
+
+	private static MemberUserAvatar getMemberInfo(String hxid, String username) {
+		MemberUserAvatar member=null;
+		HashMap<String,MemberUserAvatar> members=SuperWeChatApplication.getInstance().getMemberMap().get(hxid);
+		if (members==null || members.size()<0){
+			return null;
+		}else {
+			member=members.get(username);
+		}
+		return member;
 	}
 }

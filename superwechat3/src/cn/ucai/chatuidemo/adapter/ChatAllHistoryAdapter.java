@@ -44,6 +44,7 @@ import cn.ucai.chatuidemo.Constant;
 import cn.ucai.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.R;
 import cn.ucai.chatuidemo.domain.RobotUser;
+import cn.ucai.chatuidemo.domain.User;
 import cn.ucai.chatuidemo.utils.DateUtils;
 import cn.ucai.chatuidemo.utils.SmileUtils;
 import cn.ucai.chatuidemo.utils.UserUtils;
@@ -100,6 +101,7 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		if (conversation.getType() == EMConversationType.GroupChat) {
 			// 群聊消息，显示群聊头像
 			holder.avatar.setImageResource(R.drawable.group_icon);
+			UserUtils.setAppGroupAvatar(getContext(),username,holder.avatar);
 			EMGroup group = EMGroupManager.getInstance().getGroup(username);
 			holder.name.setText(group != null ? group.getGroupName() : username);
 		} else if(conversation.getType() == EMConversationType.ChatRoom){
