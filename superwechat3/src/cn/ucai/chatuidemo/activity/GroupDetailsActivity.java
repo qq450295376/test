@@ -42,7 +42,13 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chatuidemo.R;
+
+import cn.ucai.chatuidemo.bean.GroupAvatar;
+import cn.ucai.chatuidemo.bean.Result;
+import cn.ucai.chatuidemo.data.OkHttpUtils2;
+import cn.ucai.chatuidemo.utils.I;
 import cn.ucai.chatuidemo.utils.UserUtils;
+import cn.ucai.chatuidemo.utils.Utils;
 import cn.ucai.chatuidemo.widget.ExpandGridView;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
@@ -431,6 +437,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				}
 			}
 		}).start();
+		addGroupMembers(st6,groupId,newmembers);
 	}
 
 	@Override
@@ -733,7 +740,43 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			return super.getCount() + 2;
 		}
 	}
+	private void addGroupMembers(final String st2,String hxid, String[] members) {
+		String memberArr="";
+		for (String m : members){
+			memberArr+=m+",";
+		}
+		memberArr.substring(0,memberArr.length()-2);
+		final OkHttpUtils2<String> utils=new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
+				.addParam(I.Member.GROUP_HX_ID,hxid)
+				.addParam(I.Member.USER_NAME,memberArr)
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+						GroupAvatar groupAvatar = (GroupAvatar) result.getRetData();
+						if (result!=null&&result.isRetMsg()){
+							runOnUiThread(new Runnable() {
+								public void run() {
+									progressDialog.dismiss();
+									setResult(RESULT_OK);
+									finish();
+								}
+							});
+						}else {
+							progressDialog.dismiss();
+							Toast.makeText(getApplicationContext(),st2,Toast.LENGTH_LONG).show();
 
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+
+					}
+				});
+	}
 	protected void updateGroup() {
 		new Thread(new Runnable() {
 			public void run() {
