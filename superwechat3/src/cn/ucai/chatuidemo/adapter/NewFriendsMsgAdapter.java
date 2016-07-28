@@ -35,6 +35,7 @@ import com.easemob.chat.EMGroupManager;
 import com.easemob.chatuidemo.R;
 
 import cn.ucai.chatuidemo.SuperWeChatApplication;
+import cn.ucai.chatuidemo.bean.GroupAvatar;
 import cn.ucai.chatuidemo.bean.Result;
 import cn.ucai.chatuidemo.bean.UserAvatar;
 import cn.ucai.chatuidemo.data.OkHttpUtils2;
@@ -42,6 +43,7 @@ import cn.ucai.chatuidemo.db.InviteMessgeDao;
 import cn.ucai.chatuidemo.domain.InviteMessage;
 import cn.ucai.chatuidemo.domain.InviteMessage.InviteMesageStatus;
 import cn.ucai.chatuidemo.domain.User;
+import cn.ucai.chatuidemo.task.DownloadMemberMapTask;
 import cn.ucai.chatuidemo.utils.I;
 import cn.ucai.chatuidemo.utils.UserUtils;
 import cn.ucai.chatuidemo.utils.Utils;
@@ -181,10 +183,12 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			public void run() {
 				// 调用sdk的同意方法
 				try {
-					if(msg.getGroupId() == null) //同意好友请求
-						EMChatManager.getInstance().acceptInvitation(msg.getFrom());
-					else //同意加群申请
+					if(msg.getGroupId() == null) {//同意好友请求
+						EMChatManager.getInstance().acceptInvitation(msg.getFrom());}
+					else {//同意加群申请
 					    EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());
+						AddMemberToAppGroup(msg.getFrom(),msg.getGroupId());
+					}
 					((Activity) context).runOnUiThread(new Runnable() {
 
 						@Override
@@ -214,6 +218,28 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 				}
 			}
 		}).start();
+	}
+
+	private void AddMemberToAppGroup(String username,final String hxid) {
+		final OkHttpUtils2<String> utils=new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBER)
+				.addParam(I.Member.USER_NAME,username)
+				.addParam(I.Member.GROUP_HX_ID,hxid)
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+						if (result!=null && result.isRetMsg()){
+							new DownloadMemberMapTask(hxid,context).execute();
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+
+					}
+				});
 	}
 
 	private static class ViewHolder {
