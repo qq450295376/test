@@ -142,5 +142,20 @@ public class GroupAvatar implements Serializable{
 				+ ", mgroupAffiliationsCount=" + mgroupAffiliationsCount + ", mgroupIsPublic=" + mgroupIsPublic
 				+ ", mgroupAllowInvites=" + mgroupAllowInvites + "]";
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		GroupAvatar that = (GroupAvatar) o;
+
+		return mgroupId != null ? mgroupId.equals(that.mgroupId) : that.mgroupId == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		return mgroupId != null ? mgroupId.hashCode() : 0;
+	}
 }
