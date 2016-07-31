@@ -37,7 +37,7 @@ import com.easemob.chat.EMChatOptions;
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.DemoHXSDKModel;
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuliCenterApplication;
 
 import cn.ucai.fulicenter.R;
 
@@ -359,10 +359,10 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 			public void onSuccess() {
 				getActivity().runOnUiThread(new Runnable() {
 					public void run() {
-						SuperWeChatApplication.getInstance().setUser(null);
-						SuperWeChatApplication.getInstance().getUserMap().clear();
-						SuperWeChatApplication.getInstance().getList().clear();
-						SuperWeChatApplication.getInstance().getGroupList().clear();
+						FuliCenterApplication.getInstance().setUser(null);
+						FuliCenterApplication.getInstance().getUserMap().clear();
+						FuliCenterApplication.getInstance().getList().clear();
+						FuliCenterApplication.getInstance().getGroupList().clear();
 						pd.dismiss();
 						// 重新显示登陆页面
 						((MainActivity) getActivity()).finish();

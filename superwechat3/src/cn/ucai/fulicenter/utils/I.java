@@ -1,19 +1,187 @@
 package cn.ucai.fulicenter.utils;
 
+import cn.ucai.fulicenter.D;
+
 public interface I {
 
+    public static final String FILE_NAME="file_name";
+
+    public static final int REQUEST_CODE_LOGIN = 1;
+    public static final int ACTIVITY_REGISTER_REQUEST_CODE = 2;
+
+    /** 下拉刷新*/
+    public static final int ACTION_DOWNLOAD=0;
+    /** 第一次下载*/
+    public static final int ACTION_PULL_DOWN=1;
+    /** 上拉刷新*/
+    public static final int ACTION_PULL_UP=2;
+
+    /** 每行显示的数量columNum*/
+    public static final int COLUM_NUM = 2;
+
+
+    /** 表示列表项布局的两种类型*/
+    public static final int TYPE_ITEM=0;
+    public static final int TYPE_FOOTER=1;
+
+    /** BeeColud APP ID */
+    public static final String BEE_COLUD_APP_ID = "3539b590-4859-4128-87a3-5fb8b86b94f6";
+    /** BeeColud APP Secret*/
+    public static final String BEE_COLUD_APP_SECRET = "c75c74e1-105e-437c-9be9-84c4ddee4d5f";
+    /** BeeColud APP Test Secret*/
+    public static final String BEE_COLUD_APP_SECRET_TEST = "06eb1210-0eeb-41df-99e3-1ffb9eb87b99";
+    /** weixin APP ID */
+    public static final String WEIXIN_APP_ID = "wxf1aa465362b4c8f1";
+    // 如果使用PayPal需要在支付之前设置client id和应用secret
+    public static final String PAYPAL_CLIENT_ID = "AVT1Ch18aTIlUJIeeCxvC7ZKQYHczGwiWm8jOwhrREc4a5FnbdwlqEB4evlHPXXUA67RAAZqZM0H8TCR";
+    public static final String PAYPAL_SECRET = "EL-fkjkEUyxrwZAmrfn46awFXlX-h2nRkyCVhhpeVdlSRuhPJKXx3ZvUTTJqPQuAeomXA8PZ2MkX24vF";
+
+    //商户名称
+    public static final String MERCHANT_NAME = "福利社";
+
+    //货币单位
+    public static final String CURRENCY_TYPE_CNY = "CNY";
+    public static final String CURRENCY_TYPE_USD = "USD";
+    
+    class Cart{
+        public static final String ID="id";
+        public static final String GOODS_ID="goods_id";
+        public static final String GOODS_THUMB="goodsThumb";
+        public static final String USER_NAME="userName";
+        /**购物车中该商品的件数*/
+        public static final String COUNT="count";
+        /**商品是否已被选中*/
+        public static final String IS_CHECKED="isChecked";
+    }
+
+    
+    class Collect{
+        /** 商品id*/
+        public static final String ID="id";
+        
+        public static final String GOODS_ID="goods_id";
+        
+        public static final String USER_NAME="userName";
+        
+        /** 商品的中文名称*/
+        public static final String GOODS_NAME="goodsName";
+        /** 商品的英文名称*/
+        public static final String GOODS_ENGLISH_NAME="goodsEnglishName";
+        public static final String GOODS_THUMB="goodsThumb";
+        public static final String GOODS_IMG="goodsImg";
+        public static final String ADD_TIME="addTime";
+    }
+    
+    class Boutique{
+        public static final String TABLE_NAME="tb_boutique";
+        public static final String ID="id";
+        public static final String CAT_ID="catId";
+        public static final String TITLE="title";
+        public static final String DESCRIPTION="description";
+        public static final String NAME="name";
+        public static final String IMAGE_URL="imageurl";
+    }
+    
+    class NewAndBoutiqueGood{
+        public static final String CAT_ID="cat_id";
+        /** 颜色id*/
+        public static final String COLOR_ID="color_id";
+        /** 颜色名*/
+        public static final String COLOR_NAME="color_name";
+        /** 颜色代码*/
+        public static final String COLOR_CODE="color_code";
+        /** 导购链接*/
+        public static final String COLOR_URL="color_url";
+    }
+    
+    class CategoryGroup{
+        public static final String ID="id";
+        public static final String NAME="name";
+        public static final String IMAGE_URL="imageurl";
+    }
+    
+    class CategoryChild extends CategoryGroup{
+        public static final String PARENT_ID="parent_id";
+        public static final String CAT_ID="catId";
+    }
+    
+    class CategoryGood{
+        public static final String TABLE_NAME="tb_category_good";
+        public static final String ID="id";
+        /** 商品id*/
+        public static final String GOODS_ID="goods_id";
+        /** 所属类别的id*/
+        public static final String CAT_ID="cat_id";
+        /** 商品的中文名称*/
+        public static final String GOODS_NAME="goods_name";
+        /** 商品的英文名称*/
+        public static final String GOODS_ENGLISH_NAME="goods_english_name";
+        /** 商品简介*/
+        public static final String GOODS_BRIEF="goods_brief";
+        /** 商品原始价格*/
+        public static final String SHOP_PRICE="shop_price";
+        /** 商品的RMB价格 */
+        public static final String CURRENT_PRICE="currency_price";
+        /** 商品折扣价格 */
+        public static final String PROMOTE_PRICE="promote_price";
+        /** 人民币折扣价格*/
+        public static final String RANK_PRICE="rank_price";
+        /**是否折扣*/
+        public static final String IS_PROMOTE="is_promote";
+        /** 商品缩略图地址*/
+        public static final String GOODS_THUMB="goods_thumb";
+        /** 商品图片地址*/
+        public static final String GOODS_IMG="goods_img";
+        /** 分享地址*/
+        public static final String ADD_TIME="add_time";
+        /** 分享地址*/
+        public static final String SHARE_URL="share_url";
+    }
+    
+    class Property{
+        public static final String ID="id";
+        public static final String goodsId="goods_id";
+        public static final String COLOR_ID="colorid";
+        public static final String COLOR_NAME="colorname";
+        public static final String COLOR_CODE="colorcode";
+        public static final String COLOR_IMG="colorimg";
+        public static final String COLOR_URL="colorurl";
+    }
+    
+    class Album{
+        public static final String TABLE_NAME="tb_album";
+        public static final String ID="id";
+        public static final String PID="pid";
+        public static final String IMG_ID="img_id";
+        public static final String IMG_URL="img_url";
+        public static final String THUMB_URL="thumb_url";
+        public static final String IMG_DESC="img_desc";
+    }
+
+    class Color{
+        public static final String TABLE_NAME="tb_color";
+        public static final String COLOR_ID="colorid";
+        public static final String CAT_ID="cat_id";
+        public static final String COLOR_NAME="colorname";
+        public static final String COLOR_CODE="colorcode";
+        public static final String COLOR_IMG="colorimg";
+    }
 	 interface User {
 		String TABLE_NAME							=		"t_superwechat_user";
-		String USER_NAME 							= 		"m_user_name";					//鐢ㄦ埛璐﹀彿
-		String PASSWORD 							= 		"m_user_password";				//鐢ㄦ埛瀵嗙爜
-		String NICK 								= 		"m_user_nick";					//鐢ㄦ埛鏄电О
+		String USER_ID 								= 		"m_user_id";					//主键
+		String USER_NAME 							= 		"m_user_name";					//用户账号
+		String PASSWORD 							= 		"m_user_password";				//用户密码
+		String NICK 								= 		"m_user_nick";					//用户昵称
+		String UN_READ_MSG_COUNT 					= 		"m_user_unread_msg_count";		//未读消息数量
 	}
 	
 	 interface Contact {
 		String TABLE_NAME 							= 		"t_superwechat_contact";
-		String CONTACT_ID 							= 		"m_contact_id";					//涓婚敭
-		String USER_NAME 							= 		"m_contact_user_name";			//鐢ㄦ埛璐﹀彿
-		String CU_NAME 								= 		"m_contact_cname";				//濂藉弸璐﹀彿
+		String CONTACT_ID 							= 		"m_contact_id";					//主键
+		String USER_ID 								= 		"m_contact_user_id";			//用户id
+		String USER_NAME 							= 		"m_contact_user_name";			//用户账号
+		String CU_ID 								= 		"m_contact_cid";				//好友id
+		String CU_NAME 								= 		"m_contact_cname";				//好友账号
 	}
 	
 	 interface Group {
@@ -41,11 +209,11 @@ public interface I {
 	
 	 interface Avatar {
 		String TABLE_NAME 							= 		"t_superwechat_avatar";
-		String AVATAR_ID 							= 		"m_avatar_id";					//涓婚敭
-		String USER_NAME 							= 		"m_avatar_user_name";			//鐢ㄦ埛璐﹀彿鎴栬�呯兢缁勮处鍙�
-		String AVATAR_PATH 							= 		"m_avatar_path";				//淇濆瓨璺緞
-		String AVATAR_TYPE 							= 		"m_avatar_type";				//澶村儚绫诲瀷锛歕n0:鐢ㄦ埛澶村儚\n1:缇ょ粍澶村儚
-		String UPDATE_TIME 							= 		"m_avatar_last_update_time";	//鏈�鍚庢洿鏂版椂闂�
+		String AVATAR_ID 							= 		"m_avatar_id";					//主键
+		String USER_ID 								= 		"m_avatar_user_id";				//用户id或者群组id
+		String USER_NAME 							= 		"m_avatar_user_name";			//用户账号或者群组账号
+		String AVATAR_PATH 							= 		"m_avatar_path";				//保存路径
+		String AVATAR_TYPE 							= 		"m_avatar_type";				//头像类型：\n0:用户头像\n1:群组头像
 	}
 	
 	 interface Location {
@@ -57,13 +225,30 @@ public interface I {
 		String IS_SEARCHED 							= 		"m_location_is_searched";		//鏄惁鍙互琚悳绱㈠埌
 		String UPDATE_TIME 							= 		"m_location_last_update_time";	//鏈�鍚庢洿鏂版椂闂�
 	}
-	String SERVER_ROOT								=		"http://10.0.2.2:8888/SuperWeChatServer/Server";
+	String SERVER_ROOT								=		"http://10.0.2.2:8888/FuLiCenterServer/Server";
 //	String AVATAR_PATH 								= 		"E:/test/";
+	public enum ActionType {
+        ACTION_DOWNLOAD, ACTION_PULL_DOWN, ACTION_SCROLL
+    }    
+
+    public final int NEW_GOOD=0;
+    public final int CATEGORY_GOOD=1;
+    public final int CAT_ID=0;
+    
+    /**
+     * 商品排序方式
+     */
+    public final int SORT_BY_PRICE_ASC=1;
+    public final int SORT_BY_PRICE_DESC=2;
+    public final int SORT_BY_ADDTIME_ASC=3;
+    public final int SORT_BY_ADDTIME_DESC=4;
 	String ISON8859_1 								= 		"iso8859-1";
 	String UTF_8 									= 		"utf-8";
 	String PAGE_ID 									= 		"page_id";						//鍒嗛〉鐨勮捣濮嬩笅鏍�
 	String PAGE_SIZE 								= 		"page_size";					//鍒嗛〉鐨勬瘡椤垫暟閲�
 	int DEFAULT_DISTANCE = 100; // 鏌ユ壘闄勮繎鐨勪汉鏃讹紝榛樿璺濈涓�100KM
+	int PAGE_ID_DEFAULT 							= 		0;								//分页的起始下标默认值
+	int PAGE_SIZE_DEFAULT 							= 		10;								//分页的每页数量默认值
 	int ID_DEFAULT									=		0;								//ID榛樿鍊�
 	int UN_READ_MSG_COUNT_DEFAULT					=		0;								//鏈娑堟伅鏁伴噺榛樿鍊�
 	int GROUP_MAX_USERS_DEFAULT 					= 		-1;								//缇ょ粍鏈�澶т汉鏁伴粯璁ゅ��
@@ -85,44 +270,46 @@ public interface I {
 	String AND										=		"&";							//&符号
 	int LOCATION_IS_SEARCH_ALLOW					=		1;								//鍙互琚悳绱㈠埌鍦扮悊浣嶇疆
 	int LOCATION_IS_SEARCH_INHIBIT					=		0;								//绂佹琚悳绱㈠埌鍦扮悊浣嶇疆
-	int MSG_SUCCESS						            =  		0;							    //榛樿鎴愬姛
-	int MSG_REGISTER_USERNAME_EXISTS				=		101;							//璐﹀彿宸茬粡瀛樺湪
-	int MSG_REGISTER_FAIL							=		102;							//娉ㄥ唽澶辫触
-	int MSG_UNREGISTER_FAIL							=		103;							//瑙ｉ櫎娉ㄥ唽澶辫触
-	int MSG_USER_SEARCH_FAIL		    			=		104;							// 鏌ユ壘鐢ㄦ埛澶辫触
-	int MSG_LOGIN_UNKNOW_USER						=		105;							//璐︽埛涓嶅瓨鍦�
-	int MSG_LOGIN_ERROR_PASSWORD					=		106;							//璐︽埛瀵嗙爜閿欒
-	int MSG_LOGIN_SUCCESS							=		107;							//鐧婚檰鎴愬姛
-	int MSG_USER_SAME_NICK							=		108;							//鏄电О鏈慨鏀�
-	int MSG_USER_UPDATE_NICK_FAIL					=		109;							//鏄电О淇敼澶辫触
-	int MSG_USER_SAME_PASSWORD						=		110;							//鏄电О鏈慨鏀�
-	int MSG_USER_UPDATE_PASSWORD_FAIL				=		111;							//鏄电О淇敼澶辫触
-	int MSG_LOCATION_UPLOAD_FAIL					=		112;							//鐢ㄦ埛涓婁紶鍦扮悊浣嶇疆澶辫触
-	int MSG_LOCATION_UPDATE_FAIL					=		113;							//鐢ㄦ埛鏇存柊鍦扮悊浣嶇疆澶辫触
-	int MSG_REGISTER_UPLOAD_AVATAR_FAIL				=		201;							//涓婁紶澶村儚澶辫触
-	int MSG_UPLOAD_AVATAR_FAIL						=		202;							//鏇存柊澶村儚澶辫触
-	int MSG_CONTACT_FIRENDED						=		301;							//宸茬粡鏄ソ鍙嬪叧绯�
-	int MSG_CONTACT_ADD_FAIL						=		302;							//濂藉弸鍏崇郴娣诲姞澶辫触
-	int MSG_CONTACT_DEL_FAIL						=		303;							//濂藉弸鍏崇郴鍒犻櫎澶辫触
-	int MSG_GET_CONTACT_ALL_FAIL					=		304;							// 鑾峰彇鍏ㄩ儴濂藉弸鍒楄〃澶辫触
-	int MSG_GET_CONTACT_PAGES_FAIL					=		305;							// 鍒嗛〉鑾峰彇濂藉弸鍒楄〃澶辫触
-	int MSG_GROUP_HXID_EXISTS						=		401;							//缇ょ粍鐜俊ID宸茬粡瀛樺湪
-	int MSG_GROUP_CREATE_FAIL						=		402;							//鍒涘缓缇ょ粍澶辫触
-	int MSG_GROUP_ADD_MEMBER_FAIL					=		403;							//娣诲姞缇ょ粍鎴愬憳澶辫触
-	int MSG_GROUP_GET_MEMBERS_FAIL					=		404;							//鑾峰彇缇ゆ垚鍛樺け璐�
-	int MSG_GROUP_UNKONW							=		405;							//缇ょ粍涓嶅瓨鍦�
-	int MSG_GROUP_SAME_NAME							=		406;							//鏈夌浉鍚岀兢缁勫悕绉�
-	int MSG_GROUP_UPDATE_NAME_FAIL					=		407;							//缇ょ粍鍚嶇О淇敼澶辫触
-	int MSG_GROUP_DELETE_MEMBER_FAIL				=		408;							//鍒犻櫎缇ょ粍鎴愬憳澶辫触
-	int MSG_GROUP_DELETE_MEMBERS_FAIL				=		409;							//鍒犻櫎澶氱兢缁勬垚鍛樺け璐�
-	int MSG_GROUP_DELETE_FAIL						=		410;							//鍒犻櫎缇ょ粍澶辫触
-	int MSG_GROUP_FIND_BY_GOURP_ID_FAIL				=		411;							//鏍规嵁缇ょ粍id鏌ユ壘缇ょ粍澶辫触
-	int MSG_GROUP_FIND_BY_HX_ID_FAIL				=		412;							//鏍规嵁鐜俊id鏌ユ壘缇ょ粍澶辫触
-	int MSG_GROUP_FIND_BY_USER_NAME_FAIL			=		413;							//鏌ユ壘鐢ㄦ埛鍚嶇О鏌ユ壘鏌ユ壘缇ょ粍澶辫触
-	int MSG_GROUP_FIND_BY_GROUP_NAME_FAIL			=		414;							//鏌ユ壘缇ょ粍鍚嶇О鏌ユ壘鏌ユ壘缇ょ粍澶辫触
-	int MSG_PUBLIC_GROUP_FAIL						=		415;							//鏌ユ壘鍏紑缇ゅけ璐�
-	int MSG_LOCATION_GET_FAIL						=		501;							// 鑾峰彇闄勮繎鐨勪汉澶辫触
-	int MSG_UNKNOW									=		999;							//鏈煡閿欒
+	int MSG_CONNECTION_SUCCESS						=  		900;							//连接服务器成功
+	int MSG_CONNECTION_FAIL							=  		901;							//连接服务器失败
+	int MSG_UPLOAD_AVATAR_SUCCESS					=		902;							//上传头像成功
+	int MSG_UPLOAD_AVATAR_FAIL						=		903;							//上传头像失败
+	int MSG_REGISTER_SUCCESS						=  		101;							//注册成功
+	int MSG_REGISTER_USERNAME_EXISTS				=		102;							//账号已经存在
+	int MSG_REGISTER_UPLOAD_AVATAR_FAIL				=		103;							//上传头像失败
+	int MSG_REGISTER_UPLOAD_AVATAR_SUCCESS			=		104;							//上传头像成功
+	int MSG_REGISTER_FAIL							=		105;							//注册失败
+	int MSG_UNREGISTER_SUCCESS						=  		106;							//注册成功
+	int MSG_UNREGISTER_FAIL							=		107;							//注册失败
+	int MSG_CONTACT_FIRENDED						=		201;							//已经是好友关系
+	int MSG_CONTACT_FAIL							=		202;							//好友关系
+	int MSG_GROUP_CREATE_SCUUESS					=		301;							//创建群组成功
+	int MSG_GROUP_HXID_EXISTS						=		302;							//群组环信ID已经存在
+	int MSG_GROUP_CREATE_FAIL						=		303;							//创建群组成功
+	int MSG_GROUP_ADD_MEMBER_FAIL					=		304;							//添加群组成员失败
+	int MSG_GROUP_ADD_MEMBER_SCUUESS				=		305;							//添加群组成员成功
+	int MSG_GROUP_UNKONW							=		306;							//群组不存在
+	int MSG_GROUP_SAME_NAME							=		307;							//群组名称未修改
+	int MSG_GROUP_UPDATE_NAME_SUCCESS				=		308;							//群组名称修改成功
+	int MSG_GROUP_UPDATE_NAME_FAIL					=		309;							//群组名称修改失败
+	int MSG_GROUP_DELETE_MEMBER_SUCCESS				=		310;							//删除群组成员成功
+	int MSG_GROUP_DELETE_MEMBER_FAIL				=		311;							//删除群组成员失败
+	int MSG_GROUP_DELETE_SUCCESS					=		312;							//删除群组成功
+	int MSG_GROUP_DELETE_FAIL						=		313;							//删除群组失败
+	int MSG_LOGIN_UNKNOW_USER						=		401;							//账户不存在
+	int MSG_LOGIN_ERROR_PASSWORD					=		402;							//账户密码错误
+	int MSG_LOGIN_SUCCESS							=		403;							//登陆成功
+	int MSG_USER_SAME_NICK							=		404;							//昵称未修改
+	int MSG_USER_UPDATE_NICK_SUCCESS				=		405;							//昵称修改成功
+	int MSG_USER_UPDATE_NICK_FAIL					=		406;							//昵称修改失败
+	int MSG_USER_SAME_PASSWORD						=		407;							//昵称未修改
+	int MSG_USER_UPDATE_PASSWORD_SUCCESS			=		408;							//昵称修改成功
+	int MSG_USER_UPDATE_PASSWORD_FAIL				=		409;							//昵称修改失败
+	int MSG_LOCATION_UPLOAD_SUCCESS					=		501;							//用户上传地理位置成功
+	int MSG_LOCATION_UPLOAD_FAIL					=		502;							//用户上传地理位置失败
+	int MSG_LOCATION_UPDATE_SUCCESS					=		503;							//用户更新地理位置成功
+	int MSG_LOCATION_UPDATE_FAIL					=		504;							//用户更新地理位置失败
+	int MSG_UNKNOW									=		999;							//未知错误
 	int MSG_ILLEGAL_REQUEST							=		-1;							//闈炴硶璇锋眰
 
 	String KEY_REQUEST 								= 		"request";
@@ -142,23 +329,37 @@ public interface I {
 	String REQUEST_UPDATE_USER_NICK 				= 		"update_nick";
 	/** 瀹㈡埛绔慨鏀瑰瘑鐮佺殑璇锋眰 */
 	String REQUEST_UPDATE_USER_PASSWORD 			= 		"update_password";
-	/** 瀹㈡埛绔彂閫佺殑鐧婚檰璇锋眰 */
+	/** 客户端上传头像的请求 */
+	String REQUEST_UPLOAD_AVATAR_ID  		 		= 		"upload_avatar_id";
+	/** 客户端发送的登陆请求 */
 	String REQUEST_LOGIN 							= 		"login";
 	/** 瀹㈡埛绔彂閫佺殑涓嬭浇鐢ㄦ埛澶村儚璇锋眰 */
 	String REQUEST_DOWNLOAD_AVATAR	 				= 		"download_avatar";
-	/** 瀹㈡埛绔彂閫佺殑涓嬭浇鑱旂郴浜烘墍鏈夐泦鍚堣姹� */
+	/** 客户端发送的下载群组头像请求 */
+	String REQUEST_DOWNLOAD_GROUP_AVATAR 			= 		"download_group_avatar";
+	/** 客户端发送的下载联系人请求 */
+	String REQUEST_DOWNLOAD_CONTACTS			 	= 		"download_contacts";
+	/** 客户端发送的下载联系人所有集合请求 */
 	String REQUEST_DOWNLOAD_CONTACT_ALL_LIST 		= 		"download_contact_all_list";
 	/** 瀹㈡埛绔彂閫佺殑涓嬭浇鑱旂郴浜洪泦鍚堣姹� */
 	String REQUEST_DOWNLOAD_CONTACT_PAGE_LIST 		= 		"download_contact_page_list";
+		/** 客户端发送的下载联系人集合请求 */
+	String REQUEST_DOWNLOAD_CONTACT_LIST 			= 		"download_contact_list";
 	/** 瀹㈡埛绔彂閫佺殑鍒犻櫎鑱旂郴浜鸿姹� */
 	String REQUEST_DELETE_CONTACT 					= 		"delete_contact";
 	/** 瀹㈡埛绔彂閫佺殑娣诲姞鑱旂郴浜鸿姹� */
 	String REQUEST_ADD_CONTACT 						= 		"add_contact";
 	/** 瀹㈡埛绔彂閫佺殑鏌ユ壘鐢ㄦ埛璇锋眰 */
 	String REQUEST_FIND_USER 						= 		"find_user";
-	/** 瀹㈡埛绔彂閫佺殑鏍规嵁鐢ㄦ埛鎴栨樀绉版ā绯婃煡鎵剧敤鎴疯姹� */
+	/** 客户端发送的根据用户名模糊查找用户请求 */
+	String REQUEST_FIND_USERS 						= 		"find_users";
+	/** 客户端发送的根据用户昵称模糊查找用户请求 */
+	String REQUEST_FIND_USERS_BY_NICK 				= 		"find_users_by_nick";
+	/** 客户端发送的根据用户昵称模糊查找用户请求 */
 	String REQUEST_FIND_USERS_FOR_SEARCH			= 		"find_users_for_search";
-	/** 瀹㈡埛绔彂閫佺殑涓婁紶浣嶇疆璇锋眰 */
+	/** 客户端发送的下载联系人请求 */
+	String REQUEST_DOWNLOAD_CONTACT 				= 		"download_contacts";
+	/** 客户端发送的上传位置请求 */
 	String REQUEST_UPLOAD_LOCATION 					= 		"upload_location";
 	/** 瀹㈡埛绔彂閫佺殑鏇存柊浣嶇疆璇锋眰 */
 	String REQUEST_UPDATE_LOCATION 					= 		"update_location";
@@ -166,7 +367,9 @@ public interface I {
 	String REQUEST_DOWNLOAD_LOCATION 				= 		"download_location";
 	/** 瀹㈡埛绔彂閫佺殑鍒涘缓缇ょ粍璇锋眰 */
 	String REQUEST_CREATE_GROUP			 			= 		"create_group";
-	/** 瀹㈡埛绔彂閫佺殑娣诲姞缇ゆ垚鍛樿姹� */
+	/** 客户端发送的添加群成员请求 */
+	String REQUEST_ADD_GROUP_MEMBER_BY_USERNAME		= 		"add_group_member_by_username";
+	/** 客户端发送的添加群成员请求 */
 	String REQUEST_ADD_GROUP_MEMBER 				= 		"add_group_member";
 	/** 瀹㈡埛绔彂閫佺殑娣诲姞澶氫釜缇ゆ垚鍛樿姹� */
 	String REQUEST_ADD_GROUP_MEMBERS		 		= 		"add_group_members";
@@ -186,16 +389,122 @@ public interface I {
 	String REQUEST_DELETE_GROUP_MEMBERS 			= 		"delete_group_members";
 	/** 瀹㈡埛绔彂閫佺殑鍒犻櫎缇ょ粍璇锋眰 */
 	String REQUEST_DELETE_GROUP 					= 		"delete_group";
-	/** 瀹㈡埛绔彂閫佺殑涓嬭浇鍏紑瑁欒姹� */
+	/** 客户端发送的下载群组请求 */
+	String REQUEST_DOWNLOAD_GROUPS 					= 		"download_groups";
+	/** 客户端发送的下载公开裙请求 */
 	String REQUEST_FIND_PUBLIC_GROUPS 				= 		"download_public_groups";
 	/** 瀹㈡埛绔彂閫佺殑鏍规嵁缇ょ粍鍚嶇О妯＄硦鏌ユ壘缇ょ粍璇锋眰 */
 	String REQUEST_FIND_GROUP_BY_GROUP_NAME 		= 		"find_group_by_group_name";
 	/** 瀹㈡埛绔彂閫佺殑鐢ㄦ埛濮撳悕鏌ユ壘鐢ㄦ埛鎵�鍦ㄧ殑缇ょ粍璇锋眰 */
 	String REQUEST_FIND_GROUP_BY_USER_NAME 			= 		"find_group_by_user_name";
+	/** 客户端发送的根据群组名称模糊查找群组请求 */
+	String REQUEST_FIND_GROUP 						= 		"find_group_by_group_name";
 	/** 瀹㈡埛绔彂閫佺殑鏍规嵁缇ょ粍璐﹀彿鏌ユ壘缇ょ粍璇锋眰 */
 	String REQUEST_FIND_GROUP_BY_ID					= 		"find_group_by_group_id";
 	/** 瀹㈡埛绔彂閫佺殑鏍规嵁缇ょ粍鐜俊id鏌ユ壘缇ょ粍璇锋眰 */
 	String REQUEST_FIND_GROUP_BY_HXID 				= 		"find_group_by_group_hxid";
 	/** 瀹㈡埛绔彂閫佺殑鏍规嵁缇ょ粍鐜俊id鏌ユ壘鍏紑缇ょ粍璇锋眰 */
 	String REQUEST_FIND_PUBLIC_GROUP_BY_HXID 		= 		"find_public_group_by_group_hxid";
+    String DOWNLOAD_USER_AVATAR_URL                 =       I.SERVER_ROOT
+            +  "?" + KEY_REQUEST + "=" + REQUEST_DOWNLOAD_AVATAR + "&" + AVATAR_TYPE + "=";
+    /** 客户端发送的根据根据群组环信id下载群组头像的请求 */
+    String DOWNLOAD_GROUP_AVATAR_URL                 =       I.SERVER_ROOT
+            +  "?" + KEY_REQUEST + "=" + REQUEST_DOWNLOAD_GROUP_AVATAR + "&time=123" + "&" + AVATAR_TYPE + "=";
+	String REQUEST_FIND_CHARGE = "find_charge";
+    
+    /** 从服务端查询精选首页的数据*/
+    String REQUEST_FIND_BOUTIQUES="find_boutiques";
+    /** 从服务端查询新品或精选的商品*/
+    String REQUEST_FIND_NEW_BOUTIQUE_GOODS="find_new_boutique_goods";
+
+    /** 从服务端下载tb_category_parent表的数据*/
+    String REQUEST_FIND_CATEGORY_GROUP="find_category_group";
+    
+    /** 从服务端下载tb_category_child表的数据*/
+    String REQUEST_FIND_CATEGORY_CHILDREN="find_category_children";
+    
+    /** 从服务端下载tb_category_good表的数据*/
+    String REQUEST_FIND_GOOD_DETAILS="find_good_details";
+
+    /** 从服务端下载一组商品详情的数据*/
+    String REQUEST_FIND_GOODS_DETAILS="find_goods_details";
+
+    /** 下载指定小类别的颜色列表*/
+    String REQUEST_FIND_COLOR_LIST="find_color_list";
+    
+    /** 查询是否已收藏*/
+    String REQUEST_IS_COLLECT="is_collect";
+    /** 添加收藏*/
+    String REQUEST_ADD_COLLECT="add_collect";
+    /** 删除收藏*/
+    String REQUEST_DELETE_COLLECT="delete_collect";
+    /** 下载收藏的商品信息*/
+    String REQUEST_FIND_COLLECTS="find_collects";
+    /** 下载收藏的商品数量信息*/
+    String REQUEST_FIND_COLLECT_COUNT="find_collect_count";
+    
+    String REQUEST_ADD_CART="add_cart";
+    
+    String REQUEST_FIND_CARTS="find_carts";
+
+    String REQUEST_DELETE_CART="delete_cart";
+    
+    String REQUEST_UPDATE_CART="update_cart";
+    
+    /**下载新品首页商品图片*/
+    String REQUEST_DOWNLOAD_NEW_GOOD = "download_new_good";
+    
+    /**下载商品属性颜色的图片*/
+    String REQUEST_DOWNLOAD_COLOR_IMG = "download_color_img";
+    
+    /** 下载商品相册图像的URL*/
+    String DOWNLOAD_AVATAR_URL= I.SERVER_ROOT+
+        "?request="+REQUEST_DOWNLOAD_AVATAR+"&avatar=";
+    
+    /** 下载商品相册图像的请求*/
+    String REQUEST_DOWNLOAD_ALBUM_IMG="download_album_img_url";
+    /** 下载商品相册图像的接口*/
+    String DOWNLOAD_ALBUM_IMG_URL= I.SERVER_ROOT+
+        "?request="+REQUEST_DOWNLOAD_ALBUM_IMG+"&img_url=";
+    
+    /** 下载精选首页图像的请求*/
+    String REQUEST_DOWNLOAD_BOUTIQUE_IMG="download_boutique_img";
+    /** 下载精选首页图像的接口*/
+    String DOWNLOAD_BOUTIQUE_IMG_URL= I.SERVER_ROOT+
+        "?request="+REQUEST_DOWNLOAD_BOUTIQUE_IMG+"&"+Boutique.IMAGE_URL+"=";
+    
+    /** 下载分类商品大类图像的请求*/
+    String REQUEST_DOWNLOAD_CATEGORY_GROUP_IMAGE="download_category_group_image";
+    /** 下载分类商品大类图像的接口*/
+    String DOWNLOAD_DOWNLOAD_CATEGORY_GROUP_IMAGE_URL= I.SERVER_ROOT+
+        "?request="+REQUEST_DOWNLOAD_CATEGORY_GROUP_IMAGE
+        +"&"+ D.CategoryGroup.IMAGE_URL+"=";
+
+    /** 下载收藏商品图像的请求*/
+    String REQUEST_DOWNLOAD_GOODS_THUMB="download_goods_thumb";
+    /** 下载收藏商品图像的接口*/
+    String DOWNLOAD_GOODS_THUMB_URL= I.SERVER_ROOT+
+        "?request="+REQUEST_DOWNLOAD_GOODS_THUMB
+        +"&"+Collect.GOODS_THUMB+"=";
+    
+    /** 下载分类商品小类图像的请求*/
+    String REQUEST_DOWNLOAD_CATEGORY_CHILD_IMAGE="download_category_child_image";
+    /** 下载分类商品小类图像的接口*/
+    String DOWNLOAD_DOWNLOAD_CATEGORY_CHILD_IMAGE_URL= I.SERVER_ROOT+
+        "?request="+REQUEST_DOWNLOAD_CATEGORY_GROUP_IMAGE
+        +"&"+D.CategoryChild.IMAGE_URL+"=";
+    
+    String REQUEST_UPLOAD_NICK="upload_nick";
+    //壹收款支付请求
+    String REQUEST_PAY="pay";
+    /**壹收款服务端支付URL*/
+    String PAY_URL= I.SERVER_ROOT+"?request="+I.REQUEST_PAY;
+
+    String ACTION_TYPE_PERSONAL = "personal";
+    String ACTION_TYPE_CART = "cart";
+
+    /** 添加收藏*/
+    final static int ACTION_ADD_COLLECT=1;
+    /** 取消收藏*/
+    final static int ACTION_DELETE_COLLECT=2;
 }
