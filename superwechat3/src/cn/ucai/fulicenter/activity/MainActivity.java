@@ -58,7 +58,7 @@ import com.easemob.chat.EMMessage.Type;
 import com.easemob.chat.TextMessageBody;
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 import cn.ucai.fulicenter.SuperWeChatApplication;
 import cn.ucai.fulicenter.bean.Result;

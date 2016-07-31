@@ -30,7 +30,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import cn.ucai.fulicenter.Constant;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.domain.User;
 import cn.ucai.fulicenter.utils.UserUtils;
 

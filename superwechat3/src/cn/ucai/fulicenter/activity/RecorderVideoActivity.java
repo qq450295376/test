@@ -50,7 +50,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.video.util.Utils;
 import com.easemob.util.EMLog;

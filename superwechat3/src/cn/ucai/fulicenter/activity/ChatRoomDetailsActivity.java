@@ -38,7 +38,7 @@ import android.widget.Toast;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMChatRoom;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.widget.ExpandGridView;
 import com.easemob.util.EMLog;

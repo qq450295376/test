@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.easemob.EMError;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import com.easemob.exceptions.EaseMobException;
 
 import cn.ucai.fulicenter.utils.UserUtils;

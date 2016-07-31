@@ -16,7 +16,7 @@ package cn.ucai.fulicenter.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.domain.User;
 
 public class ForwardMessageActivity extends PickContactNoCheckboxActivity {

@@ -31,7 +31,7 @@ import com.easemob.chat.EMContact;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMMessage;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.SmileUtils;
 import com.easemob.util.DateUtils;

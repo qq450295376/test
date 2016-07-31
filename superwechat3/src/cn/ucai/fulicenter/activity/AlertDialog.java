@@ -28,7 +28,7 @@ import android.widget.TextView;
 import cn.ucai.fulicenter.task.DownloadImageTask;
 import cn.ucai.fulicenter.utils.ImageCache;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import com.easemob.util.ImageUtils;
 
 public class AlertDialog extends BaseActivity {

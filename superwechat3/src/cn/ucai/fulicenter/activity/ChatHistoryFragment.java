@@ -55,7 +55,7 @@ import com.easemob.chat.EMGroupManager;
 import com.easemob.chat.EMMessage;
 import cn.ucai.fulicenter.SuperWeChatApplication;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.ChatHistoryAdapter;
 import cn.ucai.fulicenter.db.InviteMessgeDao;
 import cn.ucai.fulicenter.domain.User;

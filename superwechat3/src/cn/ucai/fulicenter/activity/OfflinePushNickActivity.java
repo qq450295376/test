@@ -1,7 +1,7 @@
 package cn.ucai.fulicenter.activity;
 
 import com.easemob.chat.EMChatManager;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;

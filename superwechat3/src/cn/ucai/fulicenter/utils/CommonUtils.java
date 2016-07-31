@@ -24,7 +24,7 @@ import android.net.NetworkInfo;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
 import cn.ucai.fulicenter.Constant;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import com.easemob.util.EMLog;
 
 public class CommonUtils {

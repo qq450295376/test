@@ -35,7 +35,7 @@ import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.ContactAdapter;
 import cn.ucai.fulicenter.domain.User;
 import cn.ucai.fulicenter.widget.Sidebar;

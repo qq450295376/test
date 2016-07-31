@@ -39,7 +39,7 @@ import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.DemoHXSDKModel;
 import cn.ucai.fulicenter.SuperWeChatApplication;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 /**
  * 设置界面

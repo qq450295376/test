@@ -38,7 +38,7 @@ import com.easemob.chat.EMGroupManager;
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.SuperWeChatApplication;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;

@@ -27,7 +27,7 @@ import com.easemob.EMValueCallBack;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 import cn.ucai.fulicenter.SuperWeChatApplication;
 import cn.ucai.fulicenter.bean.Result;

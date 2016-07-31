@@ -69,7 +69,7 @@ import com.easemob.chat.VideoMessageBody;
 import com.easemob.chat.VoiceMessageBody;
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.AlertDialog;
 import cn.ucai.fulicenter.activity.BaiduMapActivity;
 import cn.ucai.fulicenter.activity.ChatActivity;

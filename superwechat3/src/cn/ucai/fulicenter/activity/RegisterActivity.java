@@ -32,7 +32,7 @@ import cn.ucai.fulicenter.listener.OnSetAvatarListener;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.Utils;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import com.easemob.exceptions.EaseMobException;
 
 import java.io.File;

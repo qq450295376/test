@@ -44,7 +44,7 @@ import android.widget.Toast;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 import cn.ucai.fulicenter.SuperWeChatApplication;
 import cn.ucai.fulicenter.bean.GroupAvatar;

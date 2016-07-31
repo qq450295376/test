@@ -42,7 +42,7 @@ import com.easemob.chat.TextMessageBody;
 import com.easemob.chat.EMConversation.EMConversationType;
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.domain.RobotUser;
 import cn.ucai.fulicenter.utils.DateUtils;
 import cn.ucai.fulicenter.utils.SmileUtils;

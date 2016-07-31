@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 public class ExpressionAdapter extends ArrayAdapter<String>{
 

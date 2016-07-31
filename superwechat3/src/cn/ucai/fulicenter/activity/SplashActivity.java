@@ -19,7 +19,7 @@ import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 import cn.ucai.fulicenter.task.DownloadGroupListTask;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 /**
  * 开屏页

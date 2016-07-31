@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;

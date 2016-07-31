@@ -1,6 +1,6 @@
 package cn.ucai.fulicenter.activity;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 import android.content.Intent;
 import android.os.Bundle;

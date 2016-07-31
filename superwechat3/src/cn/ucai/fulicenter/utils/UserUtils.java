@@ -8,7 +8,7 @@ import android.widget.TextView;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 
 import cn.ucai.fulicenter.SuperWeChatApplication;
 import cn.ucai.fulicenter.bean.MemberUserAvatar;

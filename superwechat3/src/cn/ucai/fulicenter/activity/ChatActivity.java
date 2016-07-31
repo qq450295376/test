@@ -91,7 +91,7 @@ import com.easemob.chat.VideoMessageBody;
 import com.easemob.chat.VoiceMessageBody;
 import cn.ucai.fulicenter.SuperWeChatApplication;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.ExpressionAdapter;
 import cn.ucai.fulicenter.adapter.ExpressionPagerAdapter;
 import cn.ucai.fulicenter.adapter.MessageAdapter;

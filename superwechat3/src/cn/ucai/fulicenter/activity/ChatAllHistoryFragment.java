@@ -39,7 +39,7 @@ import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMConversation.EMConversationType;
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.SuperWeChatApplication;
-import com.easemob.chatuidemo.R;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.ChatAllHistoryAdapter;
 import cn.ucai.fulicenter.db.InviteMessgeDao;
 
