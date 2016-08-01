@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.ucai.fulicenter.bean.GroupAvatar;
 import cn.ucai.fulicenter.bean.MemberUserAvatar;
 import cn.ucai.fulicenter.bean.UserAvatar;
 
@@ -119,17 +118,13 @@ public class FuliCenterApplication extends Application {
 	private UserAvatar user;
 	private List<UserAvatar> list=new ArrayList<UserAvatar>();
 	private Map<String,UserAvatar> userMap=new HashMap<String, UserAvatar>();
-	private List<GroupAvatar> groupList=new ArrayList<GroupAvatar>();
+
 	private Map<String,HashMap<String,MemberUserAvatar>> memberMap = new HashMap<String, HashMap<String, MemberUserAvatar>>();
-	private Map<String,GroupAvatar> groupMap=new HashMap<String, GroupAvatar>();
 
-	public Map<String, GroupAvatar> getGroupMap() {
-		return groupMap;
-	}
 
-	public void setGroupMap(Map<String, GroupAvatar> groupMap) {
-		this.groupMap = groupMap;
-	}
+
+
+
 
 	public Map<String, HashMap<String, MemberUserAvatar>> getMemberMap() {
 		return memberMap;
@@ -163,11 +158,7 @@ public class FuliCenterApplication extends Application {
 		this.list = list;
 	}
 
-	public List<GroupAvatar> getGroupList() {
-		return groupList;
-	}
 
-	public void setGroupList(List<GroupAvatar> groupList) {
-		this.groupList = groupList;
-	}
+
+
 }

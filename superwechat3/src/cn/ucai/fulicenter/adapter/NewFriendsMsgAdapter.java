@@ -34,14 +34,14 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.fulicenter.R;
 
-import cn.ucai.fulicenter.bean.GroupAvatar;
+
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.db.InviteMessgeDao;
 import cn.ucai.fulicenter.domain.InviteMessage;
 import cn.ucai.fulicenter.domain.InviteMessage.InviteMesageStatus;
-import cn.ucai.fulicenter.task.DownloadMemberMapTask;
+
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.utils.Utils;
@@ -119,7 +119,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 					@Override
 					public void onClick(View v) {
 						// 同意别人发的好友请求
-						acceptInvitation(holder.status, msg);
+
 					}
 				});
 			} else if (msg.getStatus() == InviteMesageStatus.AGREED) {
@@ -162,83 +162,10 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 		return convertView;
 	}
 
-	/**
-	 * 同意好友请求或者群申请
-	 * 
-	 * @param button
-	 * @param username
-	 */
-	private void acceptInvitation(final Button button, final InviteMessage msg) {
-		final ProgressDialog pd = new ProgressDialog(context);
-		String str1 = context.getResources().getString(R.string.Are_agree_with);
-		final String str2 = context.getResources().getString(R.string.Has_agreed_to);
-		final String str3 = context.getResources().getString(R.string.Agree_with_failure);
-		pd.setMessage(str1);
-		pd.setCanceledOnTouchOutside(false);
-		pd.show();
 
-		new Thread(new Runnable() {
-			public void run() {
-				// 调用sdk的同意方法
-				try {
-					if(msg.getGroupId() == null) {//同意好友请求
-						EMChatManager.getInstance().acceptInvitation(msg.getFrom());}
-					else {//同意加群申请
-					    EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());
-						AddMemberToAppGroup(msg.getFrom(),msg.getGroupId());
-					}
-					((Activity) context).runOnUiThread(new Runnable() {
 
-						@Override
-						public void run() {
-							pd.dismiss();
-							button.setText(str2);
-							msg.setStatus(InviteMesageStatus.AGREED);
-							// 更新db
-							ContentValues values = new ContentValues();
-							values.put(InviteMessgeDao.COLUMN_NAME_STATUS, msg.getStatus().ordinal());
-							messgeDao.updateMessage(msg.getId(), values);
-							button.setBackgroundDrawable(null);
-							button.setEnabled(false);
 
-						}
-					});
-				} catch (final Exception e) {
-					((Activity) context).runOnUiThread(new Runnable() {
 
-						@Override
-						public void run() {
-							pd.dismiss();
-							Toast.makeText(context, str3 + e.getMessage(), 1).show();
-						}
-					});
-
-				}
-			}
-		}).start();
-	}
-
-	private void AddMemberToAppGroup(String username,final String hxid) {
-		final OkHttpUtils2<String> utils=new OkHttpUtils2<String>();
-		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBER)
-				.addParam(I.Member.USER_NAME,username)
-				.addParam(I.Member.GROUP_HX_ID,hxid)
-				.targetClass(String.class)
-				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
-					@Override
-					public void onSuccess(String s) {
-						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
-						if (result!=null && result.isRetMsg()){
-							new DownloadMemberMapTask(hxid,context).execute();
-						}
-					}
-
-					@Override
-					public void onError(String error) {
-
-					}
-				});
-	}
 
 	private static class ViewHolder {
 		ImageView avator;

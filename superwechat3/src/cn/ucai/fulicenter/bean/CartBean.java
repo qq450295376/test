@@ -20,7 +20,7 @@ public class CartBean implements Serializable {
 	private int count;
 	@JsonProperty("isChecked")
 	private boolean isChecked;
-	
+
 	@JsonProperty("isChecked")
 	public boolean isChecked() {
         return isChecked;

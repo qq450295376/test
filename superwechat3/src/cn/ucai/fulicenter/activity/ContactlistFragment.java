@@ -224,10 +224,7 @@ public class ContactlistFragment extends Fragment {
 					User user = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList().get(Constant.NEW_FRIENDS_USERNAME);
 					user.setUnreadMsgCount(0);
 					startActivity(new Intent(getActivity(), NewFriendsMsgActivity.class));
-				} else if (Constant.GROUP_USERNAME.equals(username)) {
-					// 进入群聊列表页面
-					startActivity(new Intent(getActivity(), GroupsActivity.class));
-				} else if(Constant.CHAT_ROOM.equals(username)){
+				}  else if(Constant.CHAT_ROOM.equals(username)){
 					//进入聊天室列表页面
 				    startActivity(new Intent(getActivity(), PublicChatRoomsActivity.class));
 				}else if(Constant.CHAT_ROBOT.equals(username)){
@@ -332,8 +329,8 @@ public class ContactlistFragment extends Fragment {
 
 	/**
 	 * 删除联系人
-	 * 
-	 * @param toDeleteUser
+	 *
+	 * @param
 	 */
 	public void deleteContact(final User tobeDeleteUser) {
 		String st1 = getResources().getString(R.string.deleting);
