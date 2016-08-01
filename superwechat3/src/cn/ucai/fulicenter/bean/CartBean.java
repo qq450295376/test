@@ -1,5 +1,7 @@
 package cn.ucai.fulicenter.bean;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -9,15 +11,17 @@ import java.io.Serializable;
  *
  */
 public class CartBean implements Serializable {
-	int id;
-	String userName;
-	int goodsId;
+	private int id;
+	private String userName;
+	private int goodsId;
 	/** 购物车中的商品信息 */
 	private GoodDetailsBean goods;
 	/** 该商品被选中的件数 */
 	private int count;
+	@JsonProperty("isChecked")
 	private boolean isChecked;
 	
+	@JsonProperty("isChecked")
 	public boolean isChecked() {
         return isChecked;
     }

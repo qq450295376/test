@@ -1,5 +1,7 @@
 package cn.ucai.fulicenter.bean;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -29,6 +31,7 @@ public class GoodDetailsBean implements Serializable {
     /** 人民币折扣价格*/
     private String rankPrice;
     /**是否折扣*/
+    @JsonProperty("isPromote")
     private boolean isPromote;
     /** 商品缩略图地址*/
     private String goodsThumb;
@@ -107,6 +110,7 @@ public class GoodDetailsBean implements Serializable {
     public void setRankPrice(String rankPrice) {
         this.rankPrice = rankPrice;
     }
+    @JsonProperty("isPromote")
     public boolean isPromote() {
         return isPromote;
     }
