@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +34,11 @@ public class NewGoodFragment extends Fragment {
     GridLayoutManager mGridLayoutMananger;
     GoodAdapter mAdapter;
     List<NewGoodBean> mGoodList;
+    TextView tvhint;
 
     int pageId=1;
-    
+    int lastItemPosition;
+
     public NewGoodFragment() {
         // Required empty public constructor
     }
@@ -48,13 +52,51 @@ public class NewGoodFragment extends Fragment {
         mGoodList=new ArrayList<NewGoodBean>();
         initView(layout);
         initData();
+        setListener();
         return layout;
+    }
+
+    private void setListener() {
+        setPullDownRefreshListener();
+        setPullUpRefreshListener();
+    }
+
+    private void setPullUpRefreshListener() {
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState==RecyclerView.SCROLL_STATE_IDLE && lastItemPosition==mAdapter.getItemCount()-1){
+                    pageId += I.PAGE_SIZE_DEFAULT;
+                    initData();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastItemPosition=mGridLayoutMananger.findLastVisibleItemPosition();
+            }
+        });
+    }
+//
+    private void setPullDownRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                tvhint.setVisibility(View.VISIBLE);
+                pageId = 1;
+                initData();
+            }
+        });
     }
 
     private void initData() {
         findNewGoodList(new OkHttpUtils2.OnCompleteListener<NewGoodBean[]>() {
             @Override
             public void onSuccess(NewGoodBean[] result) {
+                tvhint.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
                 if (result!=null){
                     ArrayList<NewGoodBean> goodBeanArrayList= Utils.array2List(result);
                     mAdapter.initData(goodBeanArrayList);
@@ -63,7 +105,8 @@ public class NewGoodFragment extends Fragment {
 
             @Override
             public void onError(String error) {
-
+                tvhint.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -91,6 +134,7 @@ public class NewGoodFragment extends Fragment {
         mRecyclerView.setLayoutManager(mGridLayoutMananger);
         mAdapter=new GoodAdapter(mContext,mGoodList);
         mRecyclerView.setAdapter(mAdapter);
+        tvhint= (TextView) layout.findViewById(R.id.tv_refresh_hint);
     }
 
 }
