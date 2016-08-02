@@ -38,6 +38,7 @@ public class NewGoodFragment extends Fragment {
 
     int pageId=1;
     int lastItemPosition;
+    int action=I.ACTION_DOWNLOAD;
 
     public NewGoodFragment() {
         // Required empty public constructor
@@ -68,6 +69,7 @@ public class NewGoodFragment extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState==RecyclerView.SCROLL_STATE_IDLE && lastItemPosition==mAdapter.getItemCount()-1){
                     if (mAdapter.isMore()){
+                        action=I.ACTION_PULL_UP;
                         pageId += I.PAGE_SIZE_DEFAULT;
                         initData();
                     }
@@ -86,8 +88,10 @@ public class NewGoodFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                action=I.ACTION_PULL_DOWN;
+                pageId = 0;
+                mSwipeRefreshLayout.setRefreshing(true);
                 tvhint.setVisibility(View.VISIBLE);
-                pageId = 1;
                 initData();
             }
         });
@@ -103,11 +107,18 @@ public class NewGoodFragment extends Fragment {
                 mAdapter.setFooterString(getResources().getString(R.string.load_more));
                 if (result!=null){
                     ArrayList<NewGoodBean> goodBeanArrayList= Utils.array2List(result);
-                    mAdapter.initData(goodBeanArrayList);
+                    if (action==I.ACTION_DOWNLOAD || action==I.ACTION_PULL_DOWN){
+                        mAdapter.initData(goodBeanArrayList);
+                    }else {
+                        mAdapter.addItem(goodBeanArrayList);
+                    }
                     if (goodBeanArrayList.size()<I.PAGE_SIZE_DEFAULT){
                         mAdapter.setMore(false);
                         mAdapter.setFooterString(getResources().getString(R.string.no_more));
                     }
+                }else {
+                    mAdapter.setMore(false);
+                    mAdapter.setFooterString(getResources().getString(R.string.no_more));
                 }
             }
 
