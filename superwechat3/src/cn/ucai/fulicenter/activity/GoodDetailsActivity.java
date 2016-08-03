@@ -2,9 +2,9 @@ package cn.ucai.fulicenter.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -13,9 +13,11 @@ import android.widget.Toast;
 
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.bean.AlbumBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.view.DisPlayUtils;
 import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
 
@@ -32,12 +34,14 @@ public class GoodDetailsActivity extends Activity {
     FlowIndicator mFlowIndicator;
     WebView wvGoodBrief;
 
-    Context mContext;
+    GoodDetailsActivity mContext;
     int mGoodId;
+    GoodDetailsBean mGoodDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_details);
+        mContext=this;
         initView();
         initData();
     }
@@ -61,6 +65,7 @@ public class GoodDetailsActivity extends Activity {
                 public void onSuccess(GoodDetailsBean result) {
                     if (result!=null){
                         Log.e("main","result="+result);
+                        mGoodDetails = result;
                         showGoodDetails(result);
                     }
                 }
@@ -83,9 +88,33 @@ public class GoodDetailsActivity extends Activity {
         tvGoodName.setText(detail.getGoodsName());
         tvGoodPriceCurrent.setText(detail.getCurrencyPrice());
         tvGoodPriceShop.setText(detail.getShopPrice());
+        mSlideAutoLoopView.startPlayLoop(mFlowIndicator,
+                getAlbumImageUrl(),getAlbumImageSize());
+        wvGoodBrief.loadDataWithBaseURL(null,mGoodDetails.getGoodsBrief(),D.TEXT_HTML,D.UTF_8,null);
     }
 
+    private String[] getAlbumImageUrl() {
+        String[] albumImageUrl=new String[]{};
+        if (mGoodDetails.getProperties()!=null && mGoodDetails.getProperties().length>0){
+            AlbumBean[] albums=mGoodDetails.getProperties()[0].getAlbums();
+            albumImageUrl=new String[albums.length];
+            for (int i=0;i<albumImageUrl.length;i++){
+                albumImageUrl[i]=albums[i].getImgUrl();
+            }
+        }
+        return albumImageUrl;
+    }
+
+    private int getAlbumImageSize() {
+        if (mGoodDetails.getProperties()!=null && mGoodDetails.getProperties().length>0){
+            return mGoodDetails.getProperties()[0].getAlbums().length;
+        }
+        return 0;
+    }
+
+
     private void initView() {
+        DisPlayUtils.initBack(mContext);
         ivShare= (ImageView) findViewById(R.id.iv_good_share);
         ivCollect= (ImageView) findViewById(R.id.iv_good_collect);
         ivCart= (ImageView) findViewById(R.id.ivAddCart);

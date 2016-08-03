@@ -12,6 +12,7 @@ import cn.ucai.fulicenter.R;
 public class FuliCenterMainActivity extends BaseActivity implements View.OnClickListener{
     Button mbtnNewGoods,mbtnBoutique,mbtnCategory,mbtnCart,mbtnContact;
     NewGoodFragment mNewGoodFragment;
+    BoutiqueFragment mBoutiqueFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,7 @@ public class FuliCenterMainActivity extends BaseActivity implements View.OnClick
         mbtnContact= (Button) findViewById(R.id.btnContact);
 
         mNewGoodFragment=new NewGoodFragment();
+        mBoutiqueFragment=new BoutiqueFragment();
         //添加显示第一个fragment
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.layout,mNewGoodFragment)
