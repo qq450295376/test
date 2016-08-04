@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.activity.BoutiqueDetailsActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.utils.I;
@@ -78,13 +80,15 @@ public class BoutiqueAdapter extends RecyclerView.Adapter<ViewHolder> {
             mBoutiqueViewHolder.tvBoutiqueTitle.setText(boutique.getTitle());
             mBoutiqueViewHolder.tvBoutiqueName.setText(boutique.getName());
             mBoutiqueViewHolder.tvBoutiqueDes.setText(boutique.getDescription());
-//            mBoutiqueViewHolder.layout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    mContext.startActivity(new Intent(mContext, BoutiqueDetailsActivity.class)
-//                    .putExtra(D.GoodDetails.KEY_GOODS_ID,good.getGoodsId()));
-//                }
-//            });
+            mBoutiqueViewHolder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, BoutiqueChildActivity.class)
+                    .putExtra(D.Boutique.KEY_GOODS_ID,boutique.getId())
+                    .putExtra(D.Boutique.KEY_NAME,boutique.getName()));
+
+                }
+            });
         }
         if (holder instanceof FootViewHolder){
             mFooterViewHolder= (FootViewHolder) holder;

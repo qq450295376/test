@@ -14,6 +14,7 @@
 package cn.ucai.fulicenter.utils;
 
 import android.content.Context;
+import android.media.Image;
 import android.widget.ImageView;
 
 import com.easemob.util.EMLog;
@@ -50,6 +51,14 @@ public class ImageUtils {
 
 	public static void setGoodThumb(Context context, ImageView imageView,String thmub){
 		String url=I.DOWNLOAD_BOUTIQUE_IMG_URL+thmub;
+		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
+	}
+	public static void setGroupCategoryImage(Context context, ImageView imageView,String thmub){
+		String url=I.DOWNLOAD_DOWNLOAD_CATEGORY_GROUP_IMAGE_URL + thmub;
+		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
+	}
+	public static void setChildCategoryImage(Context context,ImageView imageView,String thumb){
+		String url=I.DOWNLOAD_DOWNLOAD_CATEGORY_CHILD_IMAGE_URL+ thumb;
 		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
 	}
 	

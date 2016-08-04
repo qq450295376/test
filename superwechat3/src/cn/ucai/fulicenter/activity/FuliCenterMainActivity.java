@@ -3,6 +3,8 @@ package cn.ucai.fulicenter.activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
@@ -13,12 +15,39 @@ public class FuliCenterMainActivity extends BaseActivity implements View.OnClick
     Button mbtnNewGoods,mbtnBoutique,mbtnCategory,mbtnCart,mbtnContact;
     NewGoodFragment mNewGoodFragment;
     BoutiqueFragment mBoutiqueFragment;
+    CategoryFragment mCategoryFragment;
+    Fragment[] mFragment;
+
+    int index;
+    int currentTabIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fuli_center_main);
         initView();
+        initFragment();
         setListener();
+
+        //添加显示第一个fragment
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.layout,mNewGoodFragment)
+                .add(R.id.layout,mBoutiqueFragment)
+                .add(R.id.layout,mCategoryFragment)
+                .hide(mCategoryFragment)
+                .hide(mBoutiqueFragment)
+                .show(mNewGoodFragment)
+                .commit();
+    }
+
+    private void initFragment() {
+        mNewGoodFragment=new NewGoodFragment();
+        mBoutiqueFragment=new BoutiqueFragment();
+        mCategoryFragment=new CategoryFragment();
+        mFragment=new Fragment[5];
+        mFragment[0]=mNewGoodFragment;
+        mFragment[1]=mBoutiqueFragment;
+        mFragment[2]=mCategoryFragment;
+
     }
 
     private void setListener() {
@@ -36,34 +65,42 @@ public class FuliCenterMainActivity extends BaseActivity implements View.OnClick
         mbtnCart= (Button) findViewById(R.id.btnCart);
         mbtnContact= (Button) findViewById(R.id.btnContact);
 
-        mNewGoodFragment=new NewGoodFragment();
-        mBoutiqueFragment=new BoutiqueFragment();
-        //添加显示第一个fragment
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.layout,mNewGoodFragment)
-                .show(mNewGoodFragment)
-                .commit();
+
     }
     public void onClick(View v){
         initDrawable();
         switch (v.getId()){
             case R.id.btnNewGoods:
                 setDrawable(mbtnNewGoods,R.drawable.menu_item_new_good_selected,Color.BLACK);
+                index=0;
                 break;
             case R.id.btnBoutique:
                 setDrawable(mbtnBoutique,R.drawable.boutique_selected,Color.BLACK);
+                index=1;
                 break;
             case R.id.btnCategory:
                 setDrawable(mbtnCategory,R.drawable.menu_item_category_selected,Color.BLACK);
+                index=2;
                 break;
             case R.id.btnCart:
                 setDrawable(mbtnCart,R.drawable.menu_item_cart_selected,Color.BLACK);
+                index=3;
                 break;
             case R.id.btnContact:
                 setDrawable(mbtnContact,R.drawable.menu_item_personal_center_selected, Color.BLACK);
+                index=4;
                 break;
-        }
 
+        }
+        if (currentTabIndex != index) {
+            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+            trx.hide(mFragment[currentTabIndex]);
+            if (!mFragment[index].isAdded()) {
+                trx.add(R.id.fragment_container, mFragment[index]);
+            }
+            trx.show(mFragment[index]).commit();
+        }
+        currentTabIndex = index;
     }
     private void initDrawable() {
         setDrawable(mbtnNewGoods, R.drawable.menu_item_new_good_normal, Color.GRAY);

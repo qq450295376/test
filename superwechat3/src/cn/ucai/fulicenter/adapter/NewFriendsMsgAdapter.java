@@ -68,7 +68,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			holder.name = (TextView) convertView.findViewById(R.id.name);
 			holder.status = (Button) convertView.findViewById(R.id.user_state);
 			holder.groupContainer = (LinearLayout) convertView.findViewById(R.id.ll_group);
-			holder.groupname = (TextView) convertView.findViewById(R.id.tv_groupName);
+			holder.groupname = (TextView) convertView.findViewById(R.id.tv_group_name);
 			// holder.time = (TextView) convertView.findViewById(R.id.time);
 			convertView.setTag(holder);
 		} else {
