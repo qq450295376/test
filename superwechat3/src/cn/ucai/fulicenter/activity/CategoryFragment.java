@@ -54,26 +54,40 @@ public class CategoryFragment extends Fragment {
         findCategoryGroupList(new OkHttpUtils2.OnCompleteListener<CategoryGroupBean[]>() {
             @Override
             public void onSuccess(CategoryGroupBean[] result) {
-                if (result!=null){
-                    Log.e("CategoryFragment","result="+result);
-                    ArrayList<CategoryGroupBean> groupList= Utils.array2List(result);
-                    Log.e("CategoryFragment","result="+groupList.size());
-                    mAdapter.initGroupData(groupList);
-                    for (CategoryGroupBean g : groupList){
-                        findCategoryChildList(g.getId());
-                    }
+//                if (result!=null){
+//                    Log.e("CategoryFragment","result="+result);
+//                    ArrayList<CategoryGroupBean> groupList= Utils.array2List(result);
+//                    Log.e("CategoryFragment","result="+groupList.size());
 //                    mAdapter.initGroupData(groupList);
-//                    mGroupList.addAll(groupList);
-//                    mGroupList=groupList;
-                    /*int i=0;
-                    if (groupList!=null){
-                        for (CategoryGroupBean g : groupList){
+//                    for (CategoryGroupBean g : groupList){
+//                        findCategoryChildList(g.getId());
+//                    }
+////                    mAdapter.initGroupData(groupList);
+////                    mGroupList.addAll(groupList);
+////                    mGroupList=groupList;
+//                    /*int i=0;
+//                    if (groupList!=null){
+//                        for (CategoryGroupBean g : groupList){
+//                            mChildList.add(new ArrayList<CategoryChildBean>());
+//                            findCategoryChildList(g.getId(),i);
+//                            i++;
+//                        }
+//                    }*/
+//                }
+                if (result != null) {
+                    ArrayList<CategoryGroupBean> groupList = Utils.array2List(result);
+                    if (groupList != null) {
+                        Log.e("CategoryFragment", "groupList=" + groupList.size());
+                        mGroupList = groupList;
+                        int i = 0;
+                        for (CategoryGroupBean g : groupList) {
                             mChildList.add(new ArrayList<CategoryChildBean>());
                             findCategoryChildList(g.getId(),i);
                             i++;
                         }
-                    }*/
+                    }
                 }
+
             }
 
             @Override
@@ -83,9 +97,9 @@ public class CategoryFragment extends Fragment {
         });
     }
 
-    private void findCategoryChildList(int parentId/*, final int indext*/) {
+    private void findCategoryChildList(int parentId, final int indext) {
         Log.e("CategoryFragment","111111"+parentId);
-        OkHttpUtils2<CategoryChildBean[]> utils=new OkHttpUtils2<CategoryChildBean[]>();
+        final OkHttpUtils2<CategoryChildBean[]> utils=new OkHttpUtils2<CategoryChildBean[]>();
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_CHILDREN)
                 .addParam(I.CategoryChild.PARENT_ID,String.valueOf(parentId))
                 .addParam(I.PAGE_ID,String.valueOf(I.PAGE_ID_DEFAULT))
@@ -94,18 +108,30 @@ public class CategoryFragment extends Fragment {
                 .execute(new OkHttpUtils2.OnCompleteListener<CategoryChildBean[]>() {
                     @Override
                     public void onSuccess(CategoryChildBean[] result) {
-                        Log.e("CategoryFragment","ChildResult="+result);
-                        if (result!=null){
-                            ArrayList<CategoryChildBean> childList = Utils.array2List(result);
-                            Log.e("Category","childList="+childList.size());
-                            mAdapter.initChildData(childList);
-                            /*if (childList!=null){
-                                mChildList.set(indext,childList);
-                            }*/
-                        }/*
-                        if (groupCount==mGroupList.size()){
+//                        Log.e("CategoryFragment","ChildResult="+result);
+//                        if (result!=null){
+//                            ArrayList<CategoryChildBean> childList = Utils.array2List(result);
+//                            Log.e("Category","childList="+childList.size());
+//                            mAdapter.initChildData(childList);
+//                            /*if (childList!=null){
+//                                mChildList.set(indext,childList);
+//                            }*/
+//                        }/*
+//                        if (groupCount==mGroupList.size()){
+//                            mAdapter.addAll(mGroupList,mChildList);
+//                        }*/
+                        groupCount++;
+                        Log.e("CategoryFragment", "result=" + result);
+                        if (result != null) {
+                            ArrayList<CategoryChildBean> childlist = Utils.array2List(result);
+                            if (childlist != null) {
+                                mChildList.set(indext, childlist);
+                            }
+                        }
+                        if (groupCount == mGroupList.size()) {
                             mAdapter.addAll(mGroupList,mChildList);
-                        }*/
+                        }
+
                     }
 
                     @Override
