@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.activity;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -33,6 +34,9 @@ public class CategoryChildActivity extends Activity {
     List<NewGoodBean> mGoodlist;
     TextView tvhint;
     Button btnSortPrice,btnSortAddTime;
+    boolean mSortPriceAsc;
+    boolean mSortAddTimeAsc;
+    int sortBy;
 
 
     int pageId=1;
@@ -43,9 +47,10 @@ public class CategoryChildActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext=this;
         setContentView(R.layout.activity_category_child);
         mGoodlist=new ArrayList<NewGoodBean>();
-        mContext=this;
+        sortBy=I.SORT_BY_ADDTIME_DESC;
         initView();
         initData();
         setListener();
@@ -54,6 +59,9 @@ public class CategoryChildActivity extends Activity {
     private void setListener() {
         setPullDownRefreshListener();
         setPullUpRefreshListener();
+        SortStatusChangeListener listener=new SortStatusChangeListener();
+        btnSortAddTime.setOnClickListener(listener);
+        btnSortPrice.setOnClickListener(listener);
     }
 
     private void setPullUpRefreshListener() {
@@ -156,6 +164,35 @@ public class CategoryChildActivity extends Activity {
         tvhint= (TextView) findViewById(R.id.tv_refresh_hint);
         btnSortPrice= (Button) findViewById(R.id.btn_sort_price);
         btnSortAddTime= (Button) findViewById(R.id.btn_sort_price);
+    }
+    class SortStatusChangeListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            Drawable right;
+            switch (view.getId()){
+                case R.id.btn_sort_price:
+                    if (mSortPriceAsc){
+                        sortBy=I.SORT_BY_PRICE_ASC;
+                        right=getResources().getDrawable(R.drawable.arrow_order_up);
+                    }else {
+                        sortBy=I.SORT_BY_PRICE_DESC;
+                        right=getResources().getDrawable(R.drawable.arrow_order_down);
+                    }
+                    mSortPriceAsc = !mSortPriceAsc;
+                    right.setBounds(0,0,right.getIntrinsicWidth(),right.getIntrinsicHeight());
+                    btnSortPrice.setCompoundDrawablesWithIntrinsicBounds(null,null,right,null);
+                    break;
+                case R.id.btn_sort_addTime:
+                    if (mSortAddTimeAsc){
+                        sortBy=I.SORT_BY_ADDTIME_ASC;
+                    }else {
+                        sortBy=I.SORT_BY_ADDTIME_DESC;
+                    }
+                    mSortAddTimeAsc = !mSortAddTimeAsc;
+                    break;
+            }
+        mAdapter.setSortBy(sortBy);
+        }
     }
 
 }
