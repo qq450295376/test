@@ -256,6 +256,10 @@
             android:name=".activity.UserProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
+        <activity
+            android:name=".activity.CategoryChildActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" />
 
         <!-- 开机自启动服务 -->
         <receiver android:name="com.easemob.chat.StartServiceReceiver">

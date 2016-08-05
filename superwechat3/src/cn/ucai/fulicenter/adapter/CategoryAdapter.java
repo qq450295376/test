@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.text.Layout;
 import android.util.Log;
@@ -16,8 +17,10 @@ import java.util.List;
 
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.CategoryChildActivity;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
+import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageUtils;
 
 /**
@@ -86,7 +89,6 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        Log.i("main", "777");
         Log.e("CategoryAdapter","mGrouplist="+mGroupList);
         GroupViewHolder holder=null;
         if (convertView==null){
@@ -114,7 +116,6 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup viewGroup) {
-        Log.i("main", "888");
         ChildViewHolder holder;
         if (convertView==null){
             holder=new ChildViewHolder();
@@ -126,12 +127,18 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         }else {
             holder= (ChildViewHolder) convertView.getTag();
         }
-        CategoryChildBean child=mChildList.get(groupPosition).get(childPosition);
+        final CategoryChildBean child=mChildList.get(groupPosition).get(childPosition);
         ImageUtils.setChildCategoryImage(mContext,holder.ivCategoryChildThumb,child.getImageUrl());
         holder.tvCategoryChildName.setText(child.getName());
         if (child!=null){
             ImageUtils.setChildCategoryImage(mContext,holder.ivCategoryChildThumb,child.getImageUrl());
             holder.tvCategoryChildName.setText(child.getName());
+            holder.layoutCategoryChild.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, CategoryChildActivity.class).putExtra(I.NewAndBoutiqueGood.CAT_ID,child.getId()));
+                }
+            });
         }
         return convertView;
     }
