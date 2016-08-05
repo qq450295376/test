@@ -5,23 +5,7 @@
     android:background="#eff2f6"
     android:orientation="vertical"
     android:id="@+id/layout_register">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="超级微信"
-            android:drawableLeft="@drawable/mobile"
-            android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:textColor="#000"
-            />
-    </RelativeLayout>
+    <include layout="@layout/common_head_title_white"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,13 +13,12 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_weight="5"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:background="#fff" >
 
             <ImageView
@@ -62,8 +45,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:background="#fff" >
 
             <ImageView
@@ -91,9 +72,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
             android:background="#fff" >
 
             <ImageView
@@ -122,9 +100,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
             android:background="#fff" >
 
             <ImageView
@@ -152,8 +127,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:background="#fff"
             >
 
@@ -189,23 +162,8 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/btn_login"
-                android:background="#fff"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_weight="2"
-                android:textColor="#000"
-                android:textSize="20sp"
-                android:text="@string/login"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="10dp"
-                android:paddingTop="7dp"
-                android:paddingBottom="7dp"
-                android:onClick="login"/>
-            <Button
                 android:id="@+id/btn_register"
-                android:background="@drawable/button_login_bg"
+                android:background="@drawable/orange_radius"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_weight="1"

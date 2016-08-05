@@ -33,6 +33,8 @@ import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.Utils;
 
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.view.DisPlayUtils;
+
 import com.easemob.exceptions.EaseMobException;
 
 import java.io.File;
@@ -67,12 +69,6 @@ public class RegisterActivity extends BaseActivity {
 	}
 
 	private void setListener() {
-		findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				finish();
-			}
-		});
 		findViewById(R.id.btn_register).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -94,6 +90,7 @@ public class RegisterActivity extends BaseActivity {
 		userNickEditText= (EditText) findViewById(R.id.nick);
 		imAvatar= (ImageView) findViewById(R.id.iv_avatar);
 		avatar= (EditText) findViewById(R.id.avatar);
+		DisPlayUtils.initBackWithTitle(this,"账户注册");
 	}
 
 	@Override
