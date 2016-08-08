@@ -16,6 +16,7 @@ public class FuliCenterMainActivity extends BaseActivity implements View.OnClick
     NewGoodFragment mNewGoodFragment;
     BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
+    PersonalCenterFragment mPersonalCenterFragment;
     Fragment[] mFragment;
 
     int index;
@@ -33,6 +34,7 @@ public class FuliCenterMainActivity extends BaseActivity implements View.OnClick
                 .add(R.id.layout,mNewGoodFragment)
                 .add(R.id.layout,mBoutiqueFragment)
                 .add(R.id.layout,mCategoryFragment)
+                .add(R.id.layout,mPersonalCenterFragment)
                 .hide(mCategoryFragment)
                 .hide(mBoutiqueFragment)
                 .show(mNewGoodFragment)
@@ -43,10 +45,12 @@ public class FuliCenterMainActivity extends BaseActivity implements View.OnClick
         mNewGoodFragment=new NewGoodFragment();
         mBoutiqueFragment=new BoutiqueFragment();
         mCategoryFragment=new CategoryFragment();
+        mPersonalCenterFragment=new PersonalCenterFragment();
         mFragment=new Fragment[5];
         mFragment[0]=mNewGoodFragment;
         mFragment[1]=mBoutiqueFragment;
         mFragment[2]=mCategoryFragment;
+        mFragment[4]=mPersonalCenterFragment;
 
     }
 
