@@ -1,124 +1,148 @@
 package cn.ucai.fulicenter.activity;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
+import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.R;
 
-public class FuliCenterMainActivity extends BaseActivity implements View.OnClickListener{
-    Button mbtnNewGoods,mbtnBoutique,mbtnCategory,mbtnCart,mbtnContact;
-    NewGoodFragment mNewGoodFragment;
+public class FuliCenterMainActivity extends BaseActivity {
+    private  final  static  String TAG = FuliCenterMainActivity.class.getSimpleName();
+    RadioButton rbNewGoods;
+    RadioButton rbBoutique;
+    RadioButton rbCategory;
+    RadioButton rbCart;
+    RadioButton rbPersonalCenter;
+    TextView tvCartHint;
+    RadioButton[] mrbTabs;
+    int index;
+    int currentIndex;
+    public static final int ACTION_LOGIN=100;
+    NewGoodFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
     PersonalCenterFragment mPersonalCenterFragment;
-    Fragment[] mFragment;
-
-    int index;
-    int currentTabIndex;
+    Fragment [] mFragment;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected  void  onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fuli_center_main);
         initView();
         initFragment();
-        setListener();
-
-        //添加显示第一个fragment
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.layout,mNewGoodFragment)
-                .add(R.id.layout,mBoutiqueFragment)
-                .add(R.id.layout,mCategoryFragment)
-                .add(R.id.layout,mPersonalCenterFragment)
-                .hide(mCategoryFragment)
-                .hide(mBoutiqueFragment)
-                .show(mNewGoodFragment)
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container,mNewGoodsFragment)
+                .add(R.id.fragment_container,mBoutiqueFragment)
+                .add(R.id.fragment_container,mCategoryFragment)
+                .add(R.id.fragment_container,mPersonalCenterFragment)
+                .hide(mBoutiqueFragment).hide(mCategoryFragment).hide(mPersonalCenterFragment)
+                .show(mNewGoodsFragment)
                 .commit();
+
     }
 
     private void initFragment() {
-        mNewGoodFragment=new NewGoodFragment();
-        mBoutiqueFragment=new BoutiqueFragment();
-        mCategoryFragment=new CategoryFragment();
-        mPersonalCenterFragment=new PersonalCenterFragment();
-        mFragment=new Fragment[5];
-        mFragment[0]=mNewGoodFragment;
-        mFragment[1]=mBoutiqueFragment;
-        mFragment[2]=mCategoryFragment;
-        mFragment[4]=mPersonalCenterFragment;
+        mNewGoodsFragment = new NewGoodFragment();
+        mBoutiqueFragment = new BoutiqueFragment();
+        mCategoryFragment = new CategoryFragment();
+        mPersonalCenterFragment = new PersonalCenterFragment();
+        mFragment = new Fragment[5];
+        mFragment[0] = mNewGoodsFragment;
+        mFragment[1] = mBoutiqueFragment;
+        mFragment[2] = mCategoryFragment;
+        mFragment[4] = mPersonalCenterFragment;
 
-    }
-
-    private void setListener() {
-        findViewById(R.id.btnBoutique).setOnClickListener(this);
-        findViewById(R.id.btnCart).setOnClickListener(this);
-        findViewById(R.id.btnCategory).setOnClickListener(this);
-        findViewById(R.id.btnContact).setOnClickListener(this);
-        findViewById(R.id.btnNewGoods).setOnClickListener(this);
     }
 
     private void initView() {
-        mbtnNewGoods= (Button) findViewById(R.id.btnNewGoods);
-        mbtnBoutique= (Button) findViewById(R.id.btnBoutique);
-        mbtnCategory= (Button) findViewById(R.id.btnCategory);
-        mbtnCart= (Button) findViewById(R.id.btnCart);
-        mbtnContact= (Button) findViewById(R.id.btnContact);
-
-
+        rbNewGoods = (RadioButton)findViewById(R.id.layout_new_good);
+        rbBoutique = (RadioButton) findViewById(R.id.layout_boutique);
+        rbCategory = (RadioButton) findViewById(R.id.layout_category);
+        rbCart = (RadioButton) findViewById(R.id.layout_cart);
+        rbPersonalCenter = (RadioButton) findViewById(R.id.layout_personal_center);
+        tvCartHint = (TextView) findViewById(R.id.tvCartHint);
+        mrbTabs = new RadioButton[5];
+        mrbTabs[0]= rbNewGoods;
+        mrbTabs[1]=rbBoutique;
+        mrbTabs[2]= rbCategory;
+        mrbTabs[3]=rbCart;
+        mrbTabs[4]=rbPersonalCenter;
     }
-    public void onClick(View v){
-        initDrawable();
-        switch (v.getId()){
-            case R.id.btnNewGoods:
-                setDrawable(mbtnNewGoods,R.drawable.menu_item_new_good_selected,Color.BLACK);
+    public  void  onCheckedChange(View view){
+        switch (view.getId()){
+            case R.id.layout_new_good:
                 index=0;
                 break;
-            case R.id.btnBoutique:
-                setDrawable(mbtnBoutique,R.drawable.boutique_selected,Color.BLACK);
+            case R.id.layout_boutique:
                 index=1;
                 break;
-            case R.id.btnCategory:
-                setDrawable(mbtnCategory,R.drawable.menu_item_category_selected,Color.BLACK);
+            case R.id.layout_category:
                 index=2;
                 break;
-            case R.id.btnCart:
-                setDrawable(mbtnCart,R.drawable.menu_item_cart_selected,Color.BLACK);
-                index=3;
+            case R.id.layout_cart:
+                index = 3;
                 break;
-            case R.id.btnContact:
-                setDrawable(mbtnContact,R.drawable.menu_item_personal_center_selected, Color.BLACK);
-                index=4;
-                break;
-
+            case R.id.layout_personal_center:
+                if (DemoHXSDKHelper.getInstance().isLogined()){
+                    index = 4;
+                }else {
+                    gotoLogin();
+                }
         }
-        if (currentTabIndex != index) {
+        setFragment();
+    }
+
+    private void setFragment() {
+        Log.e(TAG,"index="+index+"currentIndex="+currentIndex);
+        if (index!=currentIndex){
             FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-            trx.hide(mFragment[currentTabIndex]);
-            if (!mFragment[index].isAdded()) {
-                trx.add(R.id.fragment_container, mFragment[index]);
+            trx.hide(mFragment[currentIndex]);
+            if (!mFragment[index].isAdded()){
+                trx.add(R.id.fragment_container,mFragment[index]);
             }
             trx.show(mFragment[index]).commit();
+            setRadioButtonStatus(index);
+            currentIndex =index;
         }
-        currentTabIndex = index;
-    }
-    private void initDrawable() {
-        setDrawable(mbtnNewGoods, R.drawable.menu_item_new_good_normal, Color.GRAY);
-        setDrawable(mbtnContact, R.drawable.menu_item_personal_center_normal, Color.GRAY);
-        setDrawable(mbtnCart, R.drawable.menu_item_cart_normal, Color.GRAY);
-        setDrawable(mbtnCategory, R.drawable.menu_item_category_normal, Color.GRAY);
-        setDrawable(mbtnBoutique, R.drawable.boutique_normal, Color.GRAY);
-    }
-    private void setDrawable(Button button, int id, int color) {
-        button.setTextColor(color);
-        Drawable drawable = ContextCompat.getDrawable(this, id);
-        drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
-        button.setCompoundDrawables(null,drawable,null,null);
     }
 
+    private void gotoLogin() {
+        startActivityForResult(new Intent(this,LoginActivity.class),ACTION_LOGIN);
+    }
 
+    private void setRadioButtonStatus(int index) {
+        for (int i=0;i<mrbTabs.length;i++){
+            if (index==i){
+                mrbTabs[i].setChecked(true);
+            }else {
+                mrbTabs[i].setChecked(false);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==ACTION_LOGIN){
+            if (DemoHXSDKHelper.getInstance().isLogined()){
+                index=4;
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!DemoHXSDKHelper.getInstance().isLogined() && index ==4){
+            index = 0;
+        }
+        setFragment();
+        setRadioButtonStatus(currentIndex);
+    }
 }

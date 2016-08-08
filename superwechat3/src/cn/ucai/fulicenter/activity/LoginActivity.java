@@ -13,6 +13,7 @@
  */
 package cn.ucai.fulicenter.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -35,6 +37,10 @@ import com.easemob.EMCallBack;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.FuliCenterApplication;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
@@ -45,10 +51,13 @@ import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.User;
+import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.utils.Utils;
+import cn.ucai.fulicenter.view.DisPlayUtils;
 
 /**
  * 登陆页面
@@ -96,6 +105,7 @@ public class LoginActivity extends BaseActivity {
 		FuliCenterApplication.currentUserNick=user.getMUserNick();
 
 		new DownloadContactListTask(currentUsername,LoginActivity.this).execute();
+		new DownloadCollectCountTask(currentUsername,LoginActivity.this).execute();
 
 
 		try {
@@ -128,7 +138,7 @@ public class LoginActivity extends BaseActivity {
 		}
 		// 进入主页面
 		Intent intent = new Intent(LoginActivity.this,
-				MainActivity.class);
+				FuliCenterMainActivity.class);
 		startActivity(intent);
 
 		finish();
@@ -151,6 +161,7 @@ public class LoginActivity extends BaseActivity {
 
 			}
 		});
+		DisPlayUtils.initBack(this);
 	}
 
 	/**
@@ -233,6 +244,7 @@ public class LoginActivity extends BaseActivity {
 						Result result=Utils.getResultFromJson(s,UserAvatar.class);
 						if (result!=null&&result.isRetMsg()){
 							UserAvatar user= (UserAvatar) result.getRetData();
+							downloadUserAvatar();
 							saveUserToDB(user);
 							loginSuccess(user);
 						}else {
@@ -256,6 +268,36 @@ public class LoginActivity extends BaseActivity {
 			dao.saveUserAvatar(user);
 		}
 	}
+	private void downloadUserAvatar() {
+		final OkHttpUtils2<Message>utils2=new OkHttpUtils2<Message>();
+		utils2.url(UserUtils.getUserAvatarPath(currentUsername))
+				.targetClass(Message.class)
+				.doInBackground(new Callback() {
+					@Override
+					public void onFailure(Request request, IOException e) {
+						Log.e(TAG,"IOException="+e.getMessage());
+					}
+
+					@Override
+					public void onResponse(Response response) throws IOException {
+						byte[]data=response.body().bytes();
+						final String acatarUrl=((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().uploadUserAvatar(data);
+						Log.e(TAG,"acatarUrl="+acatarUrl);
+					}
+				})
+				.execute(new OkHttpUtils2.OnCompleteListener<Message>() {
+					@Override
+					public void onSuccess(Message result) {
+
+					}
+
+					@Override
+					public void onError(String error) {
+
+					}
+				});
+	}
+
 
 	private void initializeContacts() {
 		Map<String, User> userlist = new HashMap<String, User>();

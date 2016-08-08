@@ -121,6 +121,7 @@ public class FuliCenterApplication extends Application {
 
 	private Map<String,HashMap<String,MemberUserAvatar>> memberMap = new HashMap<String, HashMap<String, MemberUserAvatar>>();
 
+	private int collectCount;
 
 
 
@@ -158,7 +159,11 @@ public class FuliCenterApplication extends Application {
 		this.list = list;
 	}
 
+	public int getCollectCount() {
+		return collectCount;
+	}
 
-
-
+	public void setCollectCount(int collectCount) {
+		this.collectCount = collectCount;
+	}
 }
