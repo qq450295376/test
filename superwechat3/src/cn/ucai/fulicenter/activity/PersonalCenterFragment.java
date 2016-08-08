@@ -72,6 +72,7 @@ public class PersonalCenterFragment extends Fragment {
         layoutCollect.setOnClickListener(listener);
         mtvSetting.setOnClickListener(listener);
         updatecollectCountListener();
+        layoutCollect.setOnClickListener(listener);
     }
 
     private void initView(View layout) {
@@ -93,6 +94,9 @@ public class PersonalCenterFragment extends Fragment {
                     case R.id.center_user_info:
                     case R.id.tv_center_settings:
                         startActivity(new Intent(mContext,SettingsActivity.class));
+                        break;
+                    case R.id.layout_center_collect:
+                        startActivity(new Intent(mContext,CollectActivity.class));
                 }
             }
         }
