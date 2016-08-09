@@ -36,7 +36,8 @@ public class DownloadCollectCountTask {
                 .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
                     @Override
                     public void onSuccess(MessageBean msg) {
-                        if (msg!=null){
+                        if (msg!=null && msg.isSuccess()){
+                            Log.e("DownloadCollectTask","msg="+msg);
                             FuliCenterApplication.getInstance().setCollectCount(Integer.valueOf(msg.getMsg()));
                         }else {
                             FuliCenterApplication.getInstance().setCollectCount(0);

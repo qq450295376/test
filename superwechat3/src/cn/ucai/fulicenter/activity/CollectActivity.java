@@ -1,6 +1,10 @@
 package cn.ucai.fulicenter.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -150,6 +154,25 @@ public class CollectActivity extends Activity {
         mAdapter=new CollectAdapter(mContext,mGoodlist);
         mRecyclerView.setAdapter(mAdapter);
         tvhint= (TextView) findViewById(R.id.tv_refresh_hint);
+
+        updateCollectStatus();
+    }
+    class UpdateCollectStatus extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            initData();
+        }
+    }
+    UpdateCollectStatus mReceiver;
+    private void updateCollectStatus(){
+        mReceiver=new UpdateCollectStatus();
+        IntentFilter filter=new IntentFilter("update_collect_list");
+        registerReceiver(mReceiver,filter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
 }

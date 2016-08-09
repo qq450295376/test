@@ -14,13 +14,17 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.FuliCenterApplication;
+import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
+import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 
 
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.utils.Utils;
 
 /**
  * 开屏页
@@ -63,13 +67,38 @@ public class SplashActivity extends BaseActivity {
 					String username = FuliCenterApplication.getInstance().getUserName();
 					UserDao dao=new UserDao(SplashActivity.this);
 					UserAvatar user=dao.getUserAvatar(username);
-					if (username != null) {
-						FuliCenterApplication.getInstance().setUser(user);
-						FuliCenterApplication.currentUserNick=user.getMUserNick();
-						new DownloadContactListTask(username,SplashActivity.this).execute();
-						new DownloadCollectCountTask(username,SplashActivity.this).execute();
+					if(user==null){
+						final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+						utils.setRequestUrl(I.REQUEST_FIND_USER)
+								.addParam(I.User.USER_NAME,username)
+								.targetClass(String.class)
+								.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+									@Override
+									public void onSuccess(String str) {
+										Result result = Utils.getListResultFromJson(str, UserAvatar.class);
+										if (result != null && result.isRetMsg()) {
+											UserAvatar user= (UserAvatar) result.getRetData();
+											if (user != null) {
+												FuliCenterApplication.getInstance().setUser(user);
+												FuliCenterApplication.currentUserNick = user.getMUserNick();
+											}
+										}
+									}
 
+
+									@Override
+									public void onError(String error) {
+										Log.e("main", error);
+									}
+								});
 					}
+					else  {
+						FuliCenterApplication.getInstance().setUser(user);
+						FuliCenterApplication.currentUserNick = user.getMUserNick();
+					}
+					new DownloadContactListTask(username,SplashActivity.this).execute();
+					new DownloadCollectCountTask(username,SplashActivity.this).execute();
+
 					Log.i("main","user="+user);
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
