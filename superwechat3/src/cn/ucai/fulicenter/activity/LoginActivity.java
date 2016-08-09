@@ -51,6 +51,7 @@ import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.User;
+import cn.ucai.fulicenter.task.DownloadCartListTask;
 import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
@@ -106,6 +107,7 @@ public class LoginActivity extends BaseActivity {
 
 		new DownloadContactListTask(currentUsername,LoginActivity.this).execute();
 		new DownloadCollectCountTask(currentUsername,LoginActivity.this).execute();
+		new DownloadCartListTask(currentUsername,LoginActivity.this).execute();
 
 
 		try {

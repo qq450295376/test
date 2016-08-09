@@ -1,6 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,8 +12,13 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import java.util.List;
+
 import cn.ucai.fulicenter.DemoHXSDKHelper;
+import cn.ucai.fulicenter.FuliCenterApplication;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.utils.Utils;
 
 public class FuliCenterMainActivity extends BaseActivity {
     private  final  static  String TAG = FuliCenterMainActivity.class.getSimpleName();
@@ -35,6 +43,7 @@ public class FuliCenterMainActivity extends BaseActivity {
         setContentView(R.layout.activity_fuli_center_main);
         initView();
         initFragment();
+        setListener();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container,mNewGoodsFragment)
@@ -45,6 +54,10 @@ public class FuliCenterMainActivity extends BaseActivity {
                 .show(mNewGoodsFragment)
                 .commit();
 
+    }
+
+    private void setListener() {
+        updateCartCount();
     }
 
     private void initFragment() {
@@ -144,5 +157,27 @@ public class FuliCenterMainActivity extends BaseActivity {
         }
         setFragment();
         setRadioButtonStatus(currentIndex);
+    }
+    class UpdateCartStatus extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int cartCount = Utils.getCartCount();
+            tvCartHint.setText(String.valueOf(cartCount));
+            tvCartHint.setVisibility(View.VISIBLE);
+        }
+    }
+    UpdateCartStatus mReceiver;
+    private void updateCartCount(){
+        mReceiver=new UpdateCartStatus();
+        IntentFilter filter=new IntentFilter("update_cart_list");
+        registerReceiver(mReceiver,filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mReceiver!=null){
+            unregisterReceiver(mReceiver);
+        }
     }
 }
