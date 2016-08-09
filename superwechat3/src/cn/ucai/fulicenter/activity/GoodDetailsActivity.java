@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,7 @@ import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.utils.Utils;
 import cn.ucai.fulicenter.view.DisPlayUtils;
 import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
@@ -151,6 +153,7 @@ public class GoodDetailsActivity extends Activity {
     protected void onResume() {
         super.onResume();
         initCollectStatus();
+        updateCartStatus();
     }
 
     private void initCollectStatus() {
@@ -290,5 +293,26 @@ public class GoodDetailsActivity extends Activity {
 // 启动分享GUI
         oks.show(this);
     }
+    class UpdateCartStatus extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int cartCount = Utils.getCartCount();
+            tvCartCount.setText(String.valueOf(cartCount));
+            tvCartCount.setVisibility(View.VISIBLE);
+        }
+    }
+    UpdateCartStatus mReceiver;
+    private void updateCartStatus(){
+        mReceiver=new UpdateCartStatus();
+        IntentFilter filter=new IntentFilter("update_cart_list");
+        registerReceiver(mReceiver,filter);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mReceiver!=null){
+            unregisterReceiver(mReceiver);
+        }
+    }
 }
