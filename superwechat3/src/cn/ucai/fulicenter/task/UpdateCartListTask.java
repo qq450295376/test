@@ -47,7 +47,24 @@ public class UpdateCartListTask {
 
                     }
                 });
+            }else {
+                delCart(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result!=null && result.isSuccess()){
+                            cartList.remove(cartList.indexOf(mCart));
+                            mcontext.sendStickyBroadcast(new Intent("update_cart_list"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
             }
+        }else {
+
         }
     }
 
@@ -57,6 +74,13 @@ public class UpdateCartListTask {
                 .addParam(I.Cart.ID,String.valueOf(mCart.getId()))
                 .addParam(I.Cart.COUNT,String.valueOf(mCart.getCount()))
                 .addParam(I.Cart.IS_CHECKED,String.valueOf(mCart.isChecked()))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+    public void delCart(OkHttpUtils2.OnCompleteListener<MessageBean> listener){
+        OkHttpUtils2<MessageBean> utils=new OkHttpUtils2<MessageBean>();
+        utils.setRequestUrl(I.REQUEST_DELETE_CART)
+                .addParam(I.Cart.ID,String.valueOf(mCart.getId()))
                 .targetClass(MessageBean.class)
                 .execute(listener);
     }

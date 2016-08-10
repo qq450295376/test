@@ -76,18 +76,8 @@ public class CartAdapter extends RecyclerView.Adapter<ViewHolder> {
                     new UpdateCartListTask(cart,mContext).execute();
                 }
             });
-            mGoodViewHolder.ivAddCount.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-            mGoodViewHolder.ivDelCount.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
+            mGoodViewHolder.ivAddCount.setOnClickListener(new ChangeCartListener(cart,1));
+            mGoodViewHolder.ivDelCount.setOnClickListener(new ChangeCartListener(cart,-1));
         }
     }
 
@@ -134,6 +124,21 @@ public class CartAdapter extends RecyclerView.Adapter<ViewHolder> {
             tvCartPrice= (TextView) itemView.findViewById(R.id.tv_cart_price);
             ivAddCount= (ImageView) itemView.findViewById(R.id.iv_cart_add);
             ivDelCount= (ImageView) itemView.findViewById(R.id.iv_cart_del);
+        }
+    }
+    class ChangeCartListener implements View.OnClickListener{
+        CartBean cartBean;
+        int setCount;
+
+        public ChangeCartListener(CartBean cartBean, int setCount) {
+            this.cartBean = cartBean;
+            this.setCount = setCount;
+        }
+
+        @Override
+        public void onClick(View view) {
+            this.cartBean.setCount(cartBean.getCount()+setCount);
+            new UpdateCartListTask(cartBean,mContext).execute();
         }
     }
 
