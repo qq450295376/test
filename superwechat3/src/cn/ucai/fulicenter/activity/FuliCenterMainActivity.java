@@ -36,6 +36,7 @@ public class FuliCenterMainActivity extends BaseActivity {
     BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
     PersonalCenterFragment mPersonalCenterFragment;
+    CartFragment mCartFragment;
     Fragment [] mFragment;
     @Override
     protected  void  onCreate(Bundle savedInstanceState){
@@ -50,7 +51,8 @@ public class FuliCenterMainActivity extends BaseActivity {
                 .add(R.id.fragment_container,mBoutiqueFragment)
                 .add(R.id.fragment_container,mCategoryFragment)
                 .add(R.id.fragment_container,mPersonalCenterFragment)
-                .hide(mBoutiqueFragment).hide(mCategoryFragment).hide(mPersonalCenterFragment)
+                .add(R.id.fragment_container,mCartFragment)
+                .hide(mBoutiqueFragment).hide(mCategoryFragment).hide(mPersonalCenterFragment).hide(mCartFragment)
                 .show(mNewGoodsFragment)
                 .commit();
 
@@ -64,11 +66,13 @@ public class FuliCenterMainActivity extends BaseActivity {
         mNewGoodsFragment = new NewGoodFragment();
         mBoutiqueFragment = new BoutiqueFragment();
         mCategoryFragment = new CategoryFragment();
+        mCartFragment=new CartFragment();
         mPersonalCenterFragment = new PersonalCenterFragment();
         mFragment = new Fragment[5];
         mFragment[0] = mNewGoodsFragment;
         mFragment[1] = mBoutiqueFragment;
         mFragment[2] = mCategoryFragment;
+        mFragment[3]=mCartFragment;
         mFragment[4] = mPersonalCenterFragment;
 
     }
@@ -99,7 +103,11 @@ public class FuliCenterMainActivity extends BaseActivity {
                 index=2;
                 break;
             case R.id.layout_cart:
-                index = 3;
+                if (DemoHXSDKHelper.getInstance().isLogined()){
+                    index = 3;
+                }else {
+                    gotoLogin();
+                }
                 break;
             case R.id.layout_personal_center:
                 if (DemoHXSDKHelper.getInstance().isLogined()){
@@ -161,15 +169,17 @@ public class FuliCenterMainActivity extends BaseActivity {
     class UpdateCartStatus extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
-            int cartCount = Utils.getCartCount();
-            tvCartHint.setText(String.valueOf(cartCount));
-            tvCartHint.setVisibility(View.VISIBLE);
+                int cartCount = Utils.getCartCount();
+                Log.e("Fulicenter", "cartCount=" + cartCount);
+                tvCartHint.setText(String.valueOf(cartCount));
+                tvCartHint.setVisibility(View.VISIBLE);
         }
     }
     UpdateCartStatus mReceiver;
     private void updateCartCount(){
         mReceiver=new UpdateCartStatus();
         IntentFilter filter=new IntentFilter("update_cart_list");
+        filter.addAction("update_user");
         registerReceiver(mReceiver,filter);
     }
 

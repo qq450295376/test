@@ -38,9 +38,9 @@ public class DownloadCartListTask {
                 .execute(new OkHttpUtils2.OnCompleteListener<CartBean[]>() {
                     @Override
                     public void onSuccess(CartBean[] str) {
-                        Log.e("DownloadCart","str="+str);
                         if (str!=null) {
                             ArrayList<CartBean> list = Utils.array2List(str);
+                            Log.e("DownloadCart","listsize="+list.size());
                             List<CartBean> cartList=FuliCenterApplication.getInstance().getCartList() ;
                             for (final CartBean cart : list){
                                 if (!cartList.contains(cart)){
