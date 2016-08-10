@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.GoodDetailsActivity;
 import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.NewGoodBean;
+import cn.ucai.fulicenter.task.UpdateCartListTask;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageUtils;
 import cn.ucai.fulicenter.view.FootViewHolder;
@@ -67,6 +69,25 @@ public class CartAdapter extends RecyclerView.Adapter<ViewHolder> {
             mGoodViewHolder.tvCartCount.setText("("+cart.getCount()+")");
             mGoodViewHolder.tvCartName.setText(cart.getGoods().getGoodsName());
             mGoodViewHolder.tvCartPrice.setText(cart.getGoods().getCurrencyPrice());
+            mGoodViewHolder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    cart.setChecked(b);
+                    new UpdateCartListTask(cart,mContext).execute();
+                }
+            });
+            mGoodViewHolder.ivAddCount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            mGoodViewHolder.ivDelCount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
         }
     }
 
@@ -99,7 +120,7 @@ public class CartAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     class GoodViewHolder extends ViewHolder{
         LinearLayout layout;
-        ImageView ivCartThumb;
+        ImageView ivCartThumb,ivDelCount,ivAddCount;
         TextView tvCartName;
         TextView tvCartPrice;
         TextView tvCartCount;
@@ -111,6 +132,8 @@ public class CartAdapter extends RecyclerView.Adapter<ViewHolder> {
             ivCartThumb= (ImageView) itemView.findViewById(R.id.iv_cart_thumb);
             tvCartName= (TextView) itemView.findViewById(R.id.tv_cart_good_name);
             tvCartPrice= (TextView) itemView.findViewById(R.id.tv_cart_price);
+            ivAddCount= (ImageView) itemView.findViewById(R.id.iv_cart_add);
+            ivDelCount= (ImageView) itemView.findViewById(R.id.iv_cart_del);
         }
     }
 

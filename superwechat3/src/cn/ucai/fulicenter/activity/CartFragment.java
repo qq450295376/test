@@ -147,7 +147,7 @@ public class CartFragment extends Fragment {
                 GoodDetailsBean good=cart.getGoods();
                 if (good!=null && cart.isChecked()){
                     sumPrice+=converPrice(good.getCurrencyPrice())*cart.getCount();
-                    rankPrice+=converPrice(good.getPromotePrice())*cart.getCount();
+                    rankPrice+=converPrice(good.getRankPrice())*cart.getCount();
                 }
             }
             tvSumPrice.setText("合计：¥"+sumPrice);
