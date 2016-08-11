@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.ucai.fulicenter.D;
@@ -21,10 +23,12 @@ import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.FuliCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.AlbumBean;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.task.DownloadCollectCountTask;
+import cn.ucai.fulicenter.task.UpdateCartListTask;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.Utils;
 import cn.ucai.fulicenter.view.DisPlayUtils;
@@ -32,6 +36,7 @@ import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
 
 public class GoodDetailsActivity extends Activity {
+    ImageView ivAddCart;
     ImageView ivShare;
     ImageView ivCollect;
     ImageView ivCart;
@@ -62,6 +67,7 @@ public class GoodDetailsActivity extends Activity {
         MyOnClickListnener listener=new MyOnClickListnener();
         ivCollect.setOnClickListener(listener);
         ivShare.setOnClickListener(listener);
+        ivAddCart.setOnClickListener(listener);
     }
 
     private void getGoodDetailsByGoodId(OkHttpUtils2.OnCompleteListener<GoodDetailsBean> listener){
@@ -133,6 +139,7 @@ public class GoodDetailsActivity extends Activity {
 
     private void initView() {
         DisPlayUtils.initBack(mContext);
+        ivAddCart= (ImageView) findViewById(R.id.ivAddCart);
         ivShare= (ImageView) findViewById(R.id.iv_good_share);
         ivCollect= (ImageView) findViewById(R.id.iv_good_collect);
         ivCart= (ImageView) findViewById(R.id.ivAddCart);
@@ -192,8 +199,35 @@ public class GoodDetailsActivity extends Activity {
                 case R.id.iv_good_share:
                     showShare();
                     break;
+                case R.id.ivAddCart:
+                    addCart();
             }
         }
+    }
+
+    private void addCart() {
+        List<CartBean> cartList=FuliCenterApplication.getInstance().getCartList();
+        CartBean cart=new CartBean();
+        boolean isExits=false;
+        for (CartBean cartBean : cartList){
+            if (cartBean.getGoodsId()==mGoodId){
+                cart.setId(cartBean.getId());
+                cart.setGoodsId(mGoodId);
+                cart.setChecked(cartBean.isChecked());
+                cart.setCount(cartBean.getCount()+1);
+                cart.setGoods(mGoodDetails);
+                cart.setUserName(cartBean.getUserName());
+                isExits=true;
+            }
+        }
+        if (!isExits){
+            cart.setGoodsId(mGoodId);
+            cart.setChecked(true);
+            cart.setCount(1);
+            cart.setGoods(mGoodDetails);
+            cart.setUserName(FuliCenterApplication.getInstance().getUserName());
+        }
+       new UpdateCartListTask(cart,mContext).execute();
     }
 
     private void goodCollect() {

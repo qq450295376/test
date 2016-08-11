@@ -25,6 +25,7 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/tv_cart_save_price"/>
         <Button
+            android:id="@+id/btnBuy"
             android:layout_width="65dp"
             android:layout_height="match_parent"
             android:background="#f90"

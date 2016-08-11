@@ -14,11 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.FuliCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.BoutiqueAdapter;
@@ -44,6 +46,7 @@ public class CartFragment extends Fragment {
     TextView tvhint;
     TextView tvSumPrice;
     TextView tvSavePrice;
+    Button btnBuy;
     int action;
 //    int pageId=1;
 //    int lastItemPosition;
@@ -117,6 +120,7 @@ public class CartFragment extends Fragment {
         tvhint= (TextView) layout.findViewById(R.id.tv_refresh_hint);
         tvSavePrice= (TextView) layout.findViewById(R.id.tv_cart_save_price);
         tvSumPrice= (TextView) layout.findViewById(R.id.tv_cart_sum_price);
+        btnBuy= (Button) layout.findViewById(R.id.btnBuy);
     }
     class UpdateCartStatus extends BroadcastReceiver{
         @Override
@@ -139,7 +143,9 @@ public class CartFragment extends Fragment {
             mContext.unregisterReceiver(mReceiver);
         }
     }
+
     private void getSumPrice(){
+
         if (mCartList!=null && mCartList.size()>0){
             int sumPrice=0;
             int rankPrice=0;

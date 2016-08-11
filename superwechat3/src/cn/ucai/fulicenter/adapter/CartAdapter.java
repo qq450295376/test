@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,30 +66,26 @@ public class CartAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (holder instanceof GoodViewHolder){
             mGoodViewHolder= (GoodViewHolder) holder;
             final CartBean cart=mGoodList.get(position);
-            ImageUtils.setGoodThumb(mContext,mGoodViewHolder.ivCartThumb,cart.getGoods().getGoodsThumb());
-            mGoodViewHolder.tvCartCount.setText("("+cart.getCount()+")");
-            mGoodViewHolder.tvCartName.setText(cart.getGoods().getGoodsName());
-            mGoodViewHolder.tvCartPrice.setText(cart.getGoods().getCurrencyPrice());
+            mGoodViewHolder.mCheckBox.setChecked(cart.isChecked());
+            Log.e("CartAdapter","cart="+cart.getGoods());
+            if (cart.getGoods()!=null) {
+                ImageUtils.setGoodThumb(mContext, mGoodViewHolder.ivCartThumb, cart.getGoods().getGoodsThumb());
+                mGoodViewHolder.tvCartCount.setText("(" + cart.getCount() + ")");
+                mGoodViewHolder.tvCartName.setText(cart.getGoods().getGoodsName());
+                mGoodViewHolder.tvCartPrice.setText(cart.getGoods().getCurrencyPrice());
+            }
             mGoodViewHolder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     cart.setChecked(b);
-                    new UpdateCartListTask(cart,mContext).execute();
+                    new UpdateCartListTask(cart, mContext).execute();
                 }
             });
-            mGoodViewHolder.ivAddCount.setOnClickListener(new ChangeCartListener(cart,1));
-            mGoodViewHolder.ivDelCount.setOnClickListener(new ChangeCartListener(cart,-1));
+            mGoodViewHolder.ivAddCount.setOnClickListener(new ChangeCartListener(cart, 1));
+            mGoodViewHolder.ivDelCount.setOnClickListener(new ChangeCartListener(cart, -1));
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position==getItemCount()-1){
-            return I.TYPE_FOOTER;
-        }else {
-            return I.TYPE_ITEM;
-        }
-    }
 
     @Override
     public int getItemCount() {

@@ -53,6 +53,7 @@ public class DownloadCartListTask {
                                                 public void onSuccess(GoodDetailsBean result) {
                                                     Log.e("DownloadCart","result="+result);
                                                     cart.setGoods(result);
+                                                    mcontext.sendStickyBroadcast(new Intent("update_cart_list"));
                                                 }
 
                                                 @Override
